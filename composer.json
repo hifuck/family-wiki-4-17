@@ -1,0 +1,5 @@
+{
+  "require": {
+    "ares333/php-curl": "^4.1"
+  }
+}

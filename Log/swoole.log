@@ -1,0 +1,108 @@
+[2018-03-14 13:34:54 *22172.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Class App\Controller\Gateway\Trade contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (Core\AbstractInterface\AbstractController::index) in /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php on line 19.
+[2018-03-14 13:34:54 $22158.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:22:55 *9056.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AlipayChannel::generOrder(App\Model\Alipay\AlipayOrder $order): string must be compatible with App\Payment\Channel\AbstractPaymentChannel::generOrder() in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php on line 20.
+[2018-03-14 17:22:55 $9037.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:23:38 *9249.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AlipayChannel::generOrder(App\Model\Alipay\AlipayOrder $order): string must be compatible with App\Payment\Channel\AbstractPaymentChannel::generOrder(): string in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php on line 20.
+[2018-03-14 17:23:38 $9235.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:24:25 *9314.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AbstractPaymentChannel::generOrder(App\Model\Order $order): string must be compatible with App\Payment\Channel\PaymentChannelInterface::generOrder() in /home/jiang/projects/family-pay/App/Payment/Channel/AbstractPaymentChannel.php on line 12.
+[2018-03-14 17:24:25 $9300.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:25:07 *9395.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AlipayChannel::generOrder(App\Model\Alipay\AlipayOrder $order): string must be compatible with App\Payment\Channel\AbstractPaymentChannel::generOrder(App\Model\Order $order): string in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php on line 20.
+[2018-03-14 17:25:07 $9381.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:25:51 *9628.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AbstractPaymentChannel::generOrder(App\Model\Order $order): string must be compatible with App\Payment\Channel\PaymentChannelInterface::generOrder($order): string in /home/jiang/projects/family-pay/App/Payment/Channel/AbstractPaymentChannel.php on line 12.
+[2018-03-14 17:25:51 $9614.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:26:05 *9718.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AbstractPaymentChannel::generOrder(App\Model\Order $order): string must be compatible with App\Payment\Channel\PaymentChannelInterface::generOrder($order): string in /home/jiang/projects/family-pay/App/Payment/Channel/AbstractPaymentChannel.php on line 12.
+[2018-03-14 17:26:05 $9704.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:26:25 *9844.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AlipayChannel::closeOrder(string $tradeNo, string $outTradeNo, string $operatorId): App\Model\Alipay\AlipayTradeCloseResponse must be compatible with App\Payment\Channel\AbstractPaymentChannel::closeOrder() in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php on line 20.
+[2018-03-14 17:26:25 $9830.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:27:04 *10058.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Call to private method Conf\Config::sysConf() from context 'App\Payment\Channel\AlipayChannel' in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php:29
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php(74): App\Payment\Channel\AlipayChannel->__construct()
+#1 /home/jiang/projects/family-pay/Core/AbstractInterface/AbstractController.php(57): App\Controller\Gateway\Trade->signOrder()
+#2 /home/jiang
+[2018-03-14 17:27:04 $10044.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:28:29 *10452.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Cannot access private property App\Sdk\Alipay\Aop\Request\AlipayTradeCreateRequest::$bizContent in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php:86
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php(78): App\Payment\Channel\AlipayChannel->generOrder(Object(App\Model\Order))
+#1 /home/jiang/projects/family-pay/Core/AbstractInterface/AbstractController.php(57): App\Controller\Gateway\Trade->sig
+[2018-03-14 17:28:29 $10438.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 17:28:55 *10485.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Cannot access private property App\Sdk\Alipay\Aop\Request\AlipayTradeCreateRequest::$bizContent in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php:86
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php(78): App\Payment\Channel\AlipayChannel->generOrder(Object(App\Model\Order))
+#1 /home/jiang/projects/family-pay/Core/AbstractInterface/AbstractController.php(57): App\Controller\Gateway\Trade->sig
+[2018-03-14 17:28:55 $10471.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 18:13:50 *16660.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Declaration of App\Payment\Channel\AlipayChannel::checkSign($request, $resp) must be compatible with App\Payment\Channel\AbstractPaymentChannel::checkSign() in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php on line 20.
+[2018-03-14 18:13:50 $16646.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 18:14:44 *16759.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Cannot access private property App\Sdk\Alipay\Aop\AopClient::$fileCharset in /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php:157
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php(143): App\Payment\Channel\AlipayChannel->checkSign(Object(App\Sdk\Alipay\Aop\Request\AlipayTradeCreateRequest), '31231231')
+#1 /home/jiang/projects/family-pay/Core/AbstractInterface/AbstractController.php(57): App\Co
+[2018-03-14 18:14:44 $16745.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 18:15:21 *16821.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'App\Sdk\Alipay\Aop\Exception' not found in /home/jiang/projects/family-pay/App/Sdk/Alipay/Aop/AopClient.php:1026
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php(160): App\Sdk\Alipay\Aop\AopClient->checkResponseSign(Object(App\Sdk\Alipay\Aop\Request\AlipayTradeCreateRequest), Object(App\Sdk\Alipay\Aop\SignData), '31231231', 31231231)
+#1 /home/jiang/projects/family-pay/App/Controller/Gateway/Trade.php(
+[2018-03-14 18:15:21 $16807.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 18:17:10 *16947.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'App\Sdk\Alipay\Aop\Exception' not found in /home/jiang/projects/family-pay/App/Sdk/Alipay/Aop/AopClient.php:1053
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Payment/Channel/AlipayChannel.php(160): App\Sdk\Alipay\Aop\AopClient->checkResponseSign(Object(App\Sdk\Alipay\Aop\Request\AlipayTradeCreateRequest), Object(App\Sdk\Alipay\Aop\SignData), '{\r\n    "alipay_...', Object(stdClass))
+#1 /home/jiang/projects/family-pay/App/Controlle
+[2018-03-14 18:17:10 $16933.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-14 18:31:57 *18189.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 $18169.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2018-03-14 18:31:57 *18182.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18183.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18184.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18185.3]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18188.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18187.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 *18186.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:31:57 #18168.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:24 *18184.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18189.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18185.3]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18186.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18187.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18188.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 *18183.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 #18168.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-03-14 18:34:25 #18168.4]	NOTICE	Server is shutdown now.
+[2018-03-15 18:26:51 *14917.1]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'AlipayChannel' not found in /home/jiang/projects/family-pay/App/Utils/Util.php:73
+Stack trace:
+#0 /home/jiang/projects/family-pay/App/Controller/Gateway/RedPack.php(48): App\Utils\Util::buildInstance('AlipayChannel')
+#1 /home/jiang/projects/family-pay/Core/AbstractInterface/AbstractController.php(57): App\Controller\Gateway\RedPack->createAndSign()
+#2 /home/jiang/projects/family-pay/Core/Dispatcher.php(141): Core\AbstractInterface\Abstra
+[2018-03-15 18:26:51 $14903.0]	WARNING	swManager_check_exit_status: worker#1 abnormal exit, status=255, signal=0
+[2018-03-16 11:28:18 *11586.4]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class name must be a valid object or a string in /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php:194
+Stack trace:
+#0 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(234): think\Model->buildQuery()
+#1 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(405): think\Model->db(false)
+#2 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(531): think\Model->check
+[2018-03-16 11:28:18 $11568.0]	WARNING	swManager_check_exit_status: worker#4 abnormal exit, status=255, signal=0
+[2018-03-16 11:32:22 *11785.4]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class name must be a valid object or a string in /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php:197
+Stack trace:
+#0 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(238): think\Model->buildQuery()
+#1 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(409): think\Model->db(false)
+#2 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(535): think\Model->check
+[2018-03-16 11:32:22 $11768.0]	WARNING	swManager_check_exit_status: worker#4 abnormal exit, status=255, signal=0
+[2018-03-16 11:43:54 *12306.4]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class name must be a valid object or a string in /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php:195
+Stack trace:
+#0 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(236): think\Model->buildQuery()
+#1 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(407): think\Model->db(false)
+#2 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(533): think\Model->check
+[2018-03-16 11:43:54 $12289.0]	WARNING	swManager_check_exit_status: worker#4 abnormal exit, status=255, signal=0
+[2018-03-16 11:44:56 *12420.4]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class name must be a valid object or a string in /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php:196
+Stack trace:
+#0 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(237): think\Model->buildQuery()
+#1 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(408): think\Model->db(false)
+#2 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(534): think\Model->check
+[2018-03-16 11:44:56 $12403.0]	WARNING	swManager_check_exit_status: worker#4 abnormal exit, status=255, signal=0
+[2018-03-16 11:45:51 *12490.4]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'Query' not found in /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php:195
+Stack trace:
+#0 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(236): think\Model->buildQuery()
+#1 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(407): think\Model->db(false)
+#2 /home/jiang/projects/family-pay/vendor/topthink/think-orm/src/Model.php(533): think\Model->checkAllowFields(Array)
+#3 
+[2018-03-16 11:45:51 $12473.0]	WARNING	swManager_check_exit_status: worker#4 abnormal exit, status=255, signal=0
+[2018-03-16 13:38:05 *24104.5]	WARNING	swSignalfd_onSignal: signal[13] callback is null.
+[2018-03-16 13:46:09 *24606.5]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2018-03-16 13:49:45 *24824.5]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
