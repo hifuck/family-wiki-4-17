@@ -6,19 +6,28 @@ namespace App\DB;
 
 use Model\Word;
 
-class UserDB extends AbstractDB {
+class WordDB extends AbstractDB {
     public $TABLE = 'wiki_word';
+    public $TABLE_VERIFY = 'wiki_word_verify';
 
-    public function addWord(Word $word) {
-
-    }
-
-    public function editWord(Word $word) {
+    public function addWordVerify(Word $word) {
 
     }
 
-    public function deleteWord(Word $word) {
+    public function editWordVerify(Word $word) {
 
+    }
+
+    public function deleteWordVerify(int $wordId) {
+
+    }
+
+    public function getWordVerify(int $wordId) {
+
+    }
+
+    public function getWord(string $word) {
+        
     }
 
 }

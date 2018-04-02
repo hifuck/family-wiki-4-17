@@ -24,21 +24,21 @@ class Word extends AbstractController
     /**
      * 添加词条
      */
-    function addWord() {
+    function addWordVerify() {
 
     }
 
     /**
      * 编辑词条
      */
-    function editWord() {
+    function editWordVerify() {
 
     }
 
     /**
      * 删除词条
      */
-    function deleteWord() {
+    function deleteWordVerify() {
 
     }
 
