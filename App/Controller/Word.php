@@ -10,15 +10,16 @@ namespace App\Controller;
 
 use Core\AbstractInterface\AbstractController;
 use Core\Http\Message\Status;
-
+use App\ViewController;
 use App\DB\WordDB;
+use App\Utils\Util;
 
-class Word extends AbstractController
+class Word extends ViewController
 {
 
     function index()
     {
-        $this->actionNotFound();
+
     }
 
     /**

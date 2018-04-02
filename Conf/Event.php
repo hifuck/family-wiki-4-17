@@ -44,7 +44,7 @@ class Event extends AbstractEvent
 
     function onWorkerStart(\swoole_server $server, $workerId)
     {
-        // TODO: Implement onWorkerStart() method.
+        Di::getInstance()->set(SysConst::DIR_TEMP,'Temp');
     }
 
     function onWorkerStop(\swoole_server $server, $workerId)

@@ -106,3 +106,34 @@ Stack trace:
 [2018-03-16 13:38:05 *24104.5]	WARNING	swSignalfd_onSignal: signal[13] callback is null.
 [2018-03-16 13:46:09 *24606.5]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
 [2018-03-16 13:49:45 *24824.5]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2018-04-02 17:38:13 *12551.2]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught TypeError: Argument 1 passed to App\ViewController::__construct() must be of the type string, none given, called in /home/jiang/projects/family-wiki/Core/Dispatcher.php on line 131 and defined in /home/jiang/projects/family-wiki/App/ViewController.php:28
+Stack trace:
+#0 /home/jiang/projects/family-wiki/Core/Dispatcher.php(131): App\ViewController->__construct()
+#1 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher->dispatch()
+[2018-04-02 17:38:13 $12534.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0
+[2018-04-02 17:40:29 *12812.2]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Undefined class constant 'DIR_TEMP' in /home/jiang/projects/family-wiki/App/ViewController.php:28
+Stack trace:
+#0 /home/jiang/projects/family-wiki/Core/Dispatcher.php(131): App\ViewController->__construct()
+#1 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher->dispatch()
+#2 {main}
+  thrown in /home/jiang/projects/family-wiki/App/ViewController.php on line 28.
+[2018-04-02 17:40:29 $12797.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0
+[2018-04-02 17:40:31 *12818.2]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Undefined class constant 'DIR_TEMP' in /home/jiang/projects/family-wiki/App/ViewController.php:28
+Stack trace:
+#0 /home/jiang/projects/family-wiki/Core/Dispatcher.php(131): App\ViewController->__construct()
+#1 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher->dispatch()
+#2 {main}
+  thrown in /home/jiang/projects/family-wiki/App/ViewController.php on line 28.
+[2018-04-02 17:40:31 $12797.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0
+[2018-04-02 17:41:37 *12922.2]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'App\Controller\Util' not found in /home/jiang/projects/family-wiki/App/Controller/Word.php:54
+Stack trace:
+#0 /home/jiang/projects/family-wiki/Core/AbstractInterface/AbstractController.php(52): App\Controller\Word->onRequest('index')
+#1 /home/jiang/projects/family-wiki/Core/Dispatcher.php(141): Core\AbstractInterface\AbstractController->__call('index', NULL)
+#2 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher-
+[2018-04-02 17:41:37 $12907.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0
+[2018-04-02 17:42:52 *12989.2]	ERROR	zm_deactivate_swoole (ERROR 503): Fatal error: Uncaught Error: Class 'App\Controller\Util' not found in /home/jiang/projects/family-wiki/App/Controller/Word.php:54
+Stack trace:
+#0 /home/jiang/projects/family-wiki/Core/AbstractInterface/AbstractController.php(52): App\Controller\Word->onRequest('index')
+#1 /home/jiang/projects/family-wiki/Core/Dispatcher.php(141): Core\AbstractInterface\AbstractController->__call('index', NULL)
+#2 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher-
+[2018-04-02 17:42:52 $12974.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0

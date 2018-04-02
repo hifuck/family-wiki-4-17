@@ -21,4 +21,5 @@ class SysConst
     const LOG_DIRECTORY = 'LOG_DIRECTORY';
     const VERSION_CONTROL = 'VERSION_CONTROL';
     const PDO = 'PDO';
+    const DIR_TEMP = 'Temp';
 }
