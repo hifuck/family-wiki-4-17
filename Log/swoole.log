@@ -137,3 +137,19 @@ Stack trace:
 #1 /home/jiang/projects/family-wiki/Core/Dispatcher.php(141): Core\AbstractInterface\AbstractController->__call('index', NULL)
 #2 /home/jiang/projects/family-wiki/Core/Swoole/Server.php(83): Core\Dispatcher-
 [2018-04-02 17:42:52 $12974.0]	WARNING	swManager_check_exit_status: worker#2 abnormal exit, status=255, signal=0
+[2018-04-02 18:34:17 *14330.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14331.3]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 $14315.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2018-04-02 18:34:17 #14314.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14334.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14333.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14332.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14335.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14328.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:34:17 *14329.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:36:37 #14314.4]	NOTICE	Server is shutdown now.
+[2018-04-02 18:36:37 *14330.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:36:37 *14332.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:36:37 *14333.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:36:37 *14335.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-02 18:36:37 *14334.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.

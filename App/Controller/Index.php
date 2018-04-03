@@ -19,17 +19,31 @@ use Core\Swoole\Server;
 use Core\UrlParser;
 use App\ViewController;
 
+use Conf\ErrorCode;
+use App\Utils\Util;
+
 class Index extends ViewController
 {
     function index()
     {
-        $this->assign('user',"xinhuo");
-        $this->fetch('Index/index.html');
+        $params = $this->request()->getRequestParam();
+
+        $api = $params['api'] ?? null;
+
+        if ($api !== null) {
+            // 返回接口数据
+            $data['test'] = 'test data';
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+        } else {
+            // 渲染页面直接输出
+            $this->assign('user',"xinhuo");
+            $this->fetch('Index/index.html');
+        }
     }
 
     function onRequest($actionName)
     {
-        
+        $this->response()->withHeader('Access-Control-Allow-Origin','*');
     }
 
     function actionNotFound($actionName = null, $arguments = null)
