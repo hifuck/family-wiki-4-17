@@ -1,0 +1,65 @@
+* {
+    font-family: '微软雅黑', Microsoft YaHei, '宋体', Tahoma, Helvetica, Arial, sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: '微软雅黑', Microsoft YaHei, '宋体', Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff !important;
+    background-image: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+}
+
+html {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+
+/* 小屏幕（平板，大于等于 768px） */
+@media (min-width: 768px) {
+    .layout {
+        width:1180px;
+        margin: 0px auto;
+    }
+}
+
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+@media (min-width: 992px) {
+    .layout {
+        width:1180px;
+        margin: 0px auto;
+    }
+}
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+@media (min-width: 1200px) {
+    .layout {
+        width:1180px;
+        margin: 0px auto;
+    }
+}
+
+.main-wrapper {
+    background-color: #fff;
+}
+
+.footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: #ccc;
+    padding: 40px 0px 10px;
+    text-align: center;
+}
+
+.footer > .content {
+    width: 780px;
+    margin: 0px auto;
+}

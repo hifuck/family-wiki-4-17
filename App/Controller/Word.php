@@ -22,24 +22,40 @@ class Word extends ViewController
 
     }
 
+    function viewAdd() {
+        // 渲染页面直接输出
+        $this->assign('user',"xinhuo");
+        $this->fetch('Word/add.html');
+    }
+
     /**
      * 添加词条
      */
-    function addWordVerify() {
+    function add() {
+        $params = $this->request()->getRequestParam();
 
+        $api = $params['api'] ?? null;
+
+        if ($api !== null) {
+            // 返回接口数据
+            $data['test'] = 'test data';
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+        } else {
+            $this->actionNotFound('add');
+        }
     }
 
     /**
      * 编辑词条
      */
-    function editWordVerify() {
+    function edit() {
 
     }
 
     /**
      * 删除词条
      */
-    function deleteWordVerify() {
+    function delete() {
 
     }
 
@@ -47,24 +63,24 @@ class Word extends ViewController
     {
         $this->response()->withHeader('Access-Control-Allow-Origin','*');
 
-        $params = $this->request()->getRequestParam();
-        $idToken = $params['id_token'] ?? null;
-        $deviceCode = $params['deviceCode'] ?? '';
-        if($idToken == null){
-            Util::printResult($this->response(),"-20000001","未登录");
-            $this->response()->end();
-            return;
-        }else{
-            $filter = Filter::getInstance();
-            $userId = $filter->validateUser($idToken, $deviceCode);
-            if(!$userId){
-                Util::printResult($this->response(),"-20000001","未登录");
-                $this->response()->end();
-                return;
-            }else{
-                $this->userId = $userId;
-            }
-        }
+        // $params = $this->request()->getRequestParam();
+        // $idToken = $params['id_token'] ?? null;
+        // $deviceCode = $params['deviceCode'] ?? '';
+        // if($idToken == null){
+        //     Util::printResult($this->response(),"-20000001","未登录");
+        //     $this->response()->end();
+        //     return;
+        // }else{
+        //     $filter = Filter::getInstance();
+        //     $userId = $filter->validateUser($idToken, $deviceCode);
+        //     if(!$userId){
+        //         Util::printResult($this->response(),"-20000001","未登录");
+        //         $this->response()->end();
+        //         return;
+        //     }else{
+        //         $this->userId = $userId;
+        //     }
+        // }
 
         $this->wordDB = Util::buildInstance('\App\DB\WordDB');
     }

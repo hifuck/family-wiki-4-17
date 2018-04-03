@@ -60,19 +60,15 @@ class Config
             ),
             "CONTROLLER_POOL"=>true,
             "MYSQL" => array(
-                "HOST" => "120.26.103.174",
+                "HOST" => "47.104.149.49",
                 "USER" => "family",
                 "PASSWORD" => "Flare1111",
-                "DB_NAME" => "family"
+                "DB_NAME" => "family_wiki"
             ),
-            'ALIPAY' => array(
-                'alipay_public_key' => 'App/Sdk/Alipay/sandbox/alipay_public_key.txt',
-                'app_private_key' => 'App/Sdk/Alipay/sandbox/app_private_key.pem',
-                'gateway_url' => 'https://openapi.alipay.com/gateway.do',
-                'appId' => '2016091200490439',
-                'format' => 'json',
-                'charset' => 'UTF-8',
-                'signType' => 'RSA2'
+            "ES" => array(
+                "SERVER_URL" => "http://192.168.3.61",
+                "SERVER_PORT" => 9200,
+                "WORD_TYPE" => "word"
             )
         );
     }

@@ -8,10 +8,11 @@
 
 namespace App\Utils;
 
-use App\Utils\Curl;
+use Conf\Config;
+use App\Utils\HttpClient;
 use \SplQueue;          //php的spl标准库
 
-class CurlPool{
+class HttpPool{
 
     protected static $instance;
     private $pool;                          //请求池
@@ -50,19 +51,20 @@ class CurlPool{
      */
     public function pop(){
         if($this->left > 0){
-            //还有剩余的curl对象
-            $curl =  $this->pool->pop();
-            $this->left--;     //剩余的curl对象减少
-            return $curl;
+            //还有剩余的httpClient对象
+            $httpClient =  $this->pool->pop();
+            $this->left--;     //剩余的httpClient对象减少
+            return $httpClient;
 
         }else if($this->total < $this->max){
             //创建的总数小于最大允许的连接数,创建新的连接
-            //创建新的curl对象
-            $curl = new Curl();
+            //创建新的httpClient对象
+            $config = Config::getInstance()->getConf("ES");
+            $httpClient = new HttpClient($config['SERVER_IP'],$config['SERVER_PORT']);
 
-            //创建的curl对象+1
+            //创建的httpClient对象+1
             $this->total++;
-            return $curl;
+            return $httpClient;
         }
 
         return null;
@@ -70,10 +72,10 @@ class CurlPool{
 
     /**
      * 从http连接池中入队列
-     * @param $curl  curl实例
+     * @param $httpClient  httpClient实例
      */
-    public function push($curl){
-        $this->pool->push($curl);
+    public function push($httpClient){
+        $this->pool->push($httpClient);
     }
 
 }

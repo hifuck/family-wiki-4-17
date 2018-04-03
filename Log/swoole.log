@@ -153,3 +153,13 @@ Stack trace:
 [2018-04-02 18:36:37 *14333.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
 [2018-04-02 18:36:37 *14335.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
 [2018-04-02 18:36:37 *14334.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30882.7]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30877.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30875.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30881.6]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30876.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30880.5]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30879.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 *30878.3]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-04-03 15:17:55 $30862.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2018-04-03 15:17:55 #30861.4]	WARNING	swSignalfd_onSignal: signal[1] callback is null.

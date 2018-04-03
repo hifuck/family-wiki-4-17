@@ -65,14 +65,10 @@ class Config
                 "PASSWORD" => "Flare1111",
                 "DB_NAME" => "family"
             ),
-            'ALIPAY' => array(
-                'alipay_public_key' => 'App/Sdk/Alipay/cert/alipay_public_key_sha256_2018030902344273.txt',
-                'app_private_key' => 'App/Sdk/Alipay/cert/app_private_key.pem',
-                'gateway_url' => 'https://openapi.alipay.com/gateway.do',
-                'appId' => '2016091200490439',
-                'format' => 'json',
-                'charset' => 'UTF-8',
-                'signType' => 'RSA2'
+            "ES" => array(
+                "SERVER_URL" => "http://127.0.0.1",
+                "SERVER_PORT" => 9200,
+                "WORD_TYPE" => "word"
             )
         );
     }
