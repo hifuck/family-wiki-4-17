@@ -93,7 +93,7 @@ class WordTypeDB extends AbstractDB
     }
 
     /**
-     * 根据id获取该分类的详细内容
+     * c
      * @param $typeId
      * @return null
      */
@@ -110,7 +110,7 @@ class WordTypeDB extends AbstractDB
      * @param $pageSize
      * @return bool
      */
-    public function getWordTypePaging($pageIndex, $pageSize)
+    public function getWordTypePaging(int $pageIndex,int $pageSize)
     {
         $start = ($pageIndex - 1) * $pageSize;
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE LIMIT $start,$pageSize";
@@ -126,5 +126,39 @@ class WordTypeDB extends AbstractDB
         $sql = "SELECT count('id') FROM $this->TABLE_TYPE ";
         $result = $this->uniqueResult($sql);
         return $result["count('id')"];
+    }
+
+    /**
+     * 分页获取一级分类列表
+     * @param $pageIndex
+     * @param $pageSize
+     * @return bool
+     */
+    public function getTopWordTypePaging(int $pageIndex,int $pageSize){
+        $start = ($pageIndex - 1) * $pageSize;
+        $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = 0 LIMIT $start,$pageSize";
+        return $this->query($sql);
+    }
+
+    /**
+     * 总共多少条一级分类
+     * @return mixed
+     */
+    public function countTopWordType()
+    {
+        $sql = "SELECT count('id') FROM $this->TABLE_TYPE WHERE parentId = 0 ";
+        $result = $this->uniqueResult($sql);
+        return $result["count('id')"];
+    }
+
+    /**
+     * 根据分类Id获取子分类
+     * @param $typeId
+     * @return null
+     */
+    public function getChildWordTypeListById(int $typeId){
+        $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = ?";
+        $params = [$typeId];
+        return $this->query($sql,$params);
     }
 }

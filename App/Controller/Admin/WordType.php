@@ -205,22 +205,147 @@ class WordType extends ViewController
     function getWordTypePaging()
     {
         $params = $this->request()->getRequestParam();
+
         $pageIndex = $params['pageIndex'] ?? 1;
+
         $pageSize = $params['pageSize'] ?? 10;
+
         $api = $params['api'] ?? null;
+
         $wordTypeDb = new WordTypeDB();
+
         $result = $wordTypeDb->getWordTypePaging($pageIndex, $pageSize);
+
         $data['pageIndex'] = $pageIndex;
+
         $data['pageSize'] = $pageSize;
+
         $data['content'] = $result;
+
         $data['total'] = $wordTypeDb->countWordType();
+
         if ($api !== null) {
+
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
         } else {
+
             $this->assign('data', $data);
+
         }
 
     }
+
+    /**
+     * 分页获取一级词条分类
+     */
+    function getTopWordTypePaging()
+    {
+        $params = $this->request()->getRequestParam();
+
+        $pageIndex = $params['pageIndex'] ?? 1;
+
+        $pageSize = $params['pageSize'] ?? 10;
+
+        $api = $params['api'] ?? null;
+
+        $wordTypeDb = new WordTypeDB();
+
+        $result = $wordTypeDb->getTopWordTypePaging($pageIndex, $pageSize);
+
+        $data['pageIndex'] = $pageIndex;
+
+        $data['pageSize'] = $pageSize;
+
+        $data['content'] = $result;
+
+        $data['total'] = $wordTypeDb->countTopWordType();
+
+        if ($api !== null) {
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        } else {
+
+            $this->assign('data', $data);
+
+        }
+    }
+
+    /**
+     * 根据分类Id获取子分类列表
+     */
+    function getChildWordTypeListById()
+    {
+        $params = $this->request()->getRequestParam();
+
+        $typeId = $params['typeId'] ?? null;
+
+        $api = $params['api'] ?? null ;
+
+        $wordTypeDb = new WordTypeDB();
+
+        if ($api !== null ){
+
+            if ($typeId == null){
+
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,'缺少参数');
+                return;
+
+            }
+
+            $result = $wordTypeDb->getChildWordTypeListById($typeId);
+
+            $data['childWordTypeList'] = $result;
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        }else{
+
+            $result = $wordTypeDb->getChildWordTypeListById($typeId);
+
+            $this->assign('childWordTypeList',$result);
+
+        }
+    }
+
+    /**
+     * 根据id获取该分类的详细内容
+     */
+    function getWordTypeById(){
+
+        $params = $this->request()->getRequestParam();
+
+        $typeId = $params['typeId'] ?? null;
+
+        $api = $params['api'] ?? null;
+
+        $wordTypeDb = new WordTypeDB();
+
+        if ($api !== null ){
+
+            if ($typeId == null){
+
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,'缺少参数');
+                return;
+            }
+
+            $result = $wordTypeDb->getWordTypeById($typeId);
+
+            $data['wordTypeContent'] = $result;
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        }else{
+
+            $result = $wordTypeDb->getWordTypeById($typeId);
+
+            $this->assign('wordTypeContent',$result);
+
+        }
+
+    }
+
 
     function onRequest($actionName)
     {
