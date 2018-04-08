@@ -18,7 +18,7 @@ abstract class AbstractES{
         //如果连接池对象不存在，则新建连接池对象
         $this->pool = HttpPool::getInstance();
         $config = Config::getInstance()->getConf('ES');
-        $this->server = "{$config['SERVER_IP']}:{$config['SERVER_PORT']}";
+        $this->server = "{$config['SERVER_URL']}:{$config['SERVER_PORT']}";
         $this->init();
     }
 
@@ -52,7 +52,7 @@ abstract class AbstractES{
         $this->httpClient = $this->pool->pop();
         $url = '/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id;
 
-        $result = $this->httpClient->put($url,$esRequest->source);
+        $result = $this->httpClient->post($url,$esRequest->source);
 
 
         $this->retrieve();

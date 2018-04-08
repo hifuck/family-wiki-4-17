@@ -5,7 +5,7 @@
 
 namespace App\DB;
 
-use Model\Word;
+use App\Model\Word;
 
 class WordDB extends AbstractDB
 {
@@ -23,7 +23,7 @@ class WordDB extends AbstractDB
 
         $params = array($word->word, $word->content, $word->type, $word->template, $word->version);
 
-        $this->insert($sql, $params);
+        return $this->insert($sql, $params);
     }
 
     public function editWordVerify(Word $word)

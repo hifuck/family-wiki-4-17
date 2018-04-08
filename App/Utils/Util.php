@@ -27,6 +27,13 @@ class Util{
         return date("Y-m-d H:i:s");
     }
 
+        /**
+    * 获取当前时间
+    */
+    public static function getStandardCurrentTime(){
+        return date("Y-m-d\TH:i:s.000\Z");
+    }
+
     /**
     * 获取当前日期
     */

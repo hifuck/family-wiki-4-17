@@ -3,7 +3,7 @@
  * 词条的模型类
  */
 
-namespace App\Model\Word;
+namespace App\Model;
 
 class Word {
     public $id;

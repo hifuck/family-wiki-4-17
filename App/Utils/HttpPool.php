@@ -60,7 +60,7 @@ class HttpPool{
             //创建的总数小于最大允许的连接数,创建新的连接
             //创建新的httpClient对象
             $config = Config::getInstance()->getConf("ES");
-            $httpClient = new HttpClient($config['SERVER_IP'],$config['SERVER_PORT']);
+            $httpClient = new HttpClient($config['SERVER_URL'],$config['SERVER_PORT']);
 
             //创建的httpClient对象+1
             $this->total++;

@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>标题</title>
-    </head>
+{include '../Include/header.html'}
+<div class="main-wrapper">
+    <div class="layout">
+        {if ! isset($wordId)}
+            <div class="panel">
+                <form action="/WordCtl/add" method="POST">
+                    <label>词条名</label>
+                    <input type="text" name="word"><br>
+                    <textarea type="text" name="content" cols="100" rows="16"></textarea>
+                    <input type="hidden" name="type" value="1">
+                    <input type="hidden" name="template" value="1">
+                    <input type="submit" name="submit" value="提交">
+                </form>
 
-    <body>
-        {$user}添加词条
-    </body>
-</html>
+            </div>
+        {else}
+            添加成功{$word->word}
+        {/if}
+    </div>
+</div>
+{include '../Include/footer.html'}

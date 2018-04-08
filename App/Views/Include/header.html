@@ -9,10 +9,10 @@
     <meta name="renderer" content="webkit">
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="App/Views/Assets/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="App/Views/Assets/css/style.css">
+    <link rel="stylesheet" href="/App/Views/Assets/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/App/Views/Assets/css/style.css">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="App/Views/Assets/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/App/Views/Assets/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img style="margin: -15px" width="80" height="50" src="App/Views/Assets/imgs/logo_300_300.png" alt="logo">
+                    <img style="margin: -15px" width="80" height="50" src="/App/Views/Assets/imgs/logo_300_300.png" alt="logo">
                 </a>
             </div>
 
@@ -36,7 +36,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="#">首页
+                        <a href="/">首页
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -89,14 +89,15 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
+                                <a href="/UserProfile/index">我的资料</a>
+                            </li>
+                            <li>
                                 <a href="#">我的词条</a>
                             </li>
                             <li>
-                                <a href="#">创建词条</a>
+                                <a href="/Wordctl/viewAdd">创建词条</a>
                             </li>
-                            <li>
-                                <a href="#">我的资料</a>
-                            </li>
+
                             <li role="separator" class="divider"></li>
                             <li>
                                 <a href="#">退出登录</a>

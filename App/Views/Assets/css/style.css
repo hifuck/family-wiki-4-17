@@ -63,3 +63,13 @@ html {
     width: 780px;
     margin: 0px auto;
 }
+
+.left-side-menu {
+    width:20%;
+    float: left;
+}
+
+.right-side-content{
+    width:80%;
+    float: left;
+}

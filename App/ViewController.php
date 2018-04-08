@@ -59,4 +59,14 @@ abstract class ViewController extends AbstractController
     {
         $this->view->assign($tpl_var, $value, $nocache);
     }
+
+    /**
+     * 将map添加到模板变量中
+     */
+    function assignMap($map, $nocache = false) {
+        $self = $this;
+        \array_walk($map, function($value, $key) use($self, $nocache) {
+            $this->assign($key, $value, $nocache);
+        });
+    }
 }
