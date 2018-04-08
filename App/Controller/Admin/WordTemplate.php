@@ -233,17 +233,38 @@ class WordTemplate extends ViewController
         }
     }
 
+    /**
+     * 通过模板Id获取模板内容
+     */
     function getWordTemplateById()
     {
         $params = $this->request()->getRequestParam();
+
         $id = $params['id'] ?? null;
+
         $api = $params['api'] ?? null;
+
         $wordTemplateDb = new WordTemplateDB();
-        $result = $wordTemplateDb->getWordTemplateById($id);
+
         if ($api !== null) {
+
+            if ($id == null){
+
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,'缺少参数');
+                return;
+
+            }
+
+            $result = $wordTemplateDb->getWordTemplateById($id);
+
             $data['content'] = $result;
+
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
         } else {
+
+            $result = $wordTemplateDb->getWordTemplateById($id);
+
             $this->assign('data', $result);
             // $this->fetch('Admin/WordTemplate/edit.html');
         }

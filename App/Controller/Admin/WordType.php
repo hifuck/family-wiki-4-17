@@ -285,8 +285,6 @@ class WordType extends ViewController
 
         $wordTypeDb = new WordTypeDB();
 
-        $result = $wordTypeDb->getChildWordTypeListById($typeId);
-
         if ($api !== null ){
 
             if ($typeId == null){
@@ -296,15 +294,56 @@ class WordType extends ViewController
 
             }
 
+            $result = $wordTypeDb->getChildWordTypeListById($typeId);
+
             $data['childWordTypeList'] = $result;
 
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
 
         }else{
 
+            $result = $wordTypeDb->getChildWordTypeListById($typeId);
+
             $this->assign('childWordTypeList',$result);
 
         }
+    }
+
+    /**
+     * 根据id获取该分类的详细内容
+     */
+    function getWordTypeById(){
+
+        $params = $this->request()->getRequestParam();
+
+        $typeId = $params['typeId'] ?? null;
+
+        $api = $params['api'] ?? null;
+
+        $wordTypeDb = new WordTypeDB();
+
+        if ($api !== null ){
+
+            if ($typeId == null){
+
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,'缺少参数');
+                return;
+            }
+
+            $result = $wordTypeDb->getWordTypeById($typeId);
+
+            $data['wordTypeContent'] = $result;
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        }else{
+
+            $result = $wordTypeDb->getWordTypeById($typeId);
+
+            $this->assign('wordTypeContent',$result);
+
+        }
+
     }
 
 

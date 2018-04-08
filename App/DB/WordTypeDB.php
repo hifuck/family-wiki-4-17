@@ -93,7 +93,7 @@ class WordTypeDB extends AbstractDB
     }
 
     /**
-     * 根据id获取该分类的详细内容
+     * c
      * @param $typeId
      * @return null
      */
@@ -110,7 +110,7 @@ class WordTypeDB extends AbstractDB
      * @param $pageSize
      * @return bool
      */
-    public function getWordTypePaging($pageIndex, $pageSize)
+    public function getWordTypePaging(int $pageIndex,int $pageSize)
     {
         $start = ($pageIndex - 1) * $pageSize;
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE LIMIT $start,$pageSize";
@@ -134,7 +134,7 @@ class WordTypeDB extends AbstractDB
      * @param $pageSize
      * @return bool
      */
-    public function getTopWordTypePaging($pageIndex, $pageSize){
+    public function getTopWordTypePaging(int $pageIndex,int $pageSize){
         $start = ($pageIndex - 1) * $pageSize;
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = 0 LIMIT $start,$pageSize";
         return $this->query($sql);
@@ -156,7 +156,7 @@ class WordTypeDB extends AbstractDB
      * @param $typeId
      * @return null
      */
-    public function getChildWordTypeListById($typeId){
+    public function getChildWordTypeListById(int $typeId){
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = ?";
         $params = [$typeId];
         return $this->query($sql,$params);
