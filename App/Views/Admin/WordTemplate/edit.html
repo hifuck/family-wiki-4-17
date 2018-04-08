@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分类模板编辑</title>
+</head>
+<body>
+<form action="edit" method="post">
+    typeId: <input type="text" name="typeId" value="{$data['typeId']}"><br>
+    name: <input type="text" name="name" value="{$data['name']}"><br>
+    content: <input type="text" name="content" value="{$data['content']}"> <br>
+    <input type="hidden" name="templateId" value="{$data['id']}">
+    <input type="submit" value="提交">
+</form>
+{if $error == true}
+<p>{$error}</p>
+{else}
+<p>模板编辑，更新了{$updateRow}个</p>
+{/if}
+</body>
+</html>

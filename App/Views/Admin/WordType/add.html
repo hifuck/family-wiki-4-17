@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>词条分类添加</title>
+</head>
+<body>
+{if $error == true}
+<p>
+   {$error}
+</p>
+{elseif $exist == true}
+<p>
+    {$exist}
+</p>
+{else}
+<p>
+    {$typeId}
+</p>
+{/if}
+</body>
+</html>

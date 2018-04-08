@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板管理</title>
+</head>
+<body>
+<url>
+    <li><a href="viewAdd">添加</a></li>
+</url>
+<table>
+    <tr>
+        <td>ID</td>
+        <td>typeId</td>
+        <td>名字</td>
+        <td>内容</td>
+        <td>创建时间</td>
+        <td>更新时间</td>
+        <td>操作</td>
+    </tr>
+    {foreach $data['content'] as $v}
+    <tr>
+        <td>{$v['id']}</td>
+        <td>{$v['typeId']}</td>
+        <td> {$v['name']}</td>
+        <td>{$v['content']}</td>
+        <td>{$v['createTime']}</td>
+        <td>{$v['updateTime']}</td>
+        <td><a href="viewEdit?id={$v['id']}">编辑</a><a href="del?templateId={$v['id']}">删除</a></td>
+    </tr>
+    {/foreach}
+    <span>当前页：{$data['pageIndex']}，显示{$data['pageSize']}条，总共{$data['total']}条。</span>
+</table>
+</body>
+</html>

@@ -8,7 +8,7 @@ use Conf\Config;
 use PDO;
 
 class AbstractDB{
-    
+
     protected $pdo = null;
 
     public function __construct(){
@@ -22,8 +22,8 @@ class AbstractDB{
     private function connect(){
         $conf = Config::getInstance()->getConf('MYSQL');
         $this->pdo = new PDO("mysql:host=".$conf['HOST'].";dbname=".$conf['DB_NAME'],$conf['USER'],$conf['PASSWORD'], array(PDO::ATTR_PERSISTENT=>true));
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);   
-        $this->pdo->exec("set names utf8mb4");  
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->pdo->exec("set names utf8mb4");
         Di::getInstance()->set(SysConst::PDO,$this->pdo);
     }
 

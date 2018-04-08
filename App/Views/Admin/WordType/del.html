@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>词条分类的删除</title>
+</head>
+<body>
+{if $error == true}
+<p>{$error}</p>
+{else}
+{foreach $delRowArr as $item}
+<p>{$item}</p>
+{/foreach}
+{/if}
+</body>
+</html>
