@@ -205,22 +205,108 @@ class WordType extends ViewController
     function getWordTypePaging()
     {
         $params = $this->request()->getRequestParam();
+
         $pageIndex = $params['pageIndex'] ?? 1;
+
         $pageSize = $params['pageSize'] ?? 10;
+
         $api = $params['api'] ?? null;
+
         $wordTypeDb = new WordTypeDB();
+
         $result = $wordTypeDb->getWordTypePaging($pageIndex, $pageSize);
+
         $data['pageIndex'] = $pageIndex;
+
         $data['pageSize'] = $pageSize;
+
         $data['content'] = $result;
+
         $data['total'] = $wordTypeDb->countWordType();
+
         if ($api !== null) {
+
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
         } else {
+
             $this->assign('data', $data);
+
         }
 
     }
+
+    /**
+     * 分页获取一级词条分类
+     */
+    function getTopWordTypePaging()
+    {
+        $params = $this->request()->getRequestParam();
+
+        $pageIndex = $params['pageIndex'] ?? 1;
+
+        $pageSize = $params['pageSize'] ?? 10;
+
+        $api = $params['api'] ?? null;
+
+        $wordTypeDb = new WordTypeDB();
+
+        $result = $wordTypeDb->getTopWordTypePaging($pageIndex, $pageSize);
+
+        $data['pageIndex'] = $pageIndex;
+
+        $data['pageSize'] = $pageSize;
+
+        $data['content'] = $result;
+
+        $data['total'] = $wordTypeDb->countTopWordType();
+
+        if ($api !== null) {
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        } else {
+
+            $this->assign('data', $data);
+
+        }
+    }
+
+    /**
+     * 根据分类Id获取子分类列表
+     */
+    function getChildWordTypeListById()
+    {
+        $params = $this->request()->getRequestParam();
+
+        $typeId = $params['typeId'] ?? null;
+
+        $api = $params['api'] ?? null ;
+
+        $wordTypeDb = new WordTypeDB();
+
+        $result = $wordTypeDb->getChildWordTypeListById($typeId);
+
+        if ($api !== null ){
+
+            if ($typeId == null){
+
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,'缺少参数');
+                return;
+
+            }
+
+            $data['childWordTypeList'] = $result;
+
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+
+        }else{
+
+            $this->assign('childWordTypeList',$result);
+
+        }
+    }
+
 
     function onRequest($actionName)
     {
