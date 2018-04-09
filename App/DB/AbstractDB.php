@@ -16,7 +16,6 @@ class AbstractDB{
             //如果pdo对象不存在,则构建数据库连接
             $this->connect();
         }
-        
     }
 
     private function connect(){

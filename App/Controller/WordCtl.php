@@ -92,9 +92,15 @@ class WordCtl extends ViewController
 
     }
 
+    /**
+     * 搜索词条
+     */
+    function search(string $word) {
+
+    }
+
     function onRequest($actionName)
     {
-        $this->response()->withHeader('Access-Control-Allow-Origin','*');
 
         // $params = $this->request()->getRequestParam();
         // $idToken = $params['id_token'] ?? null;

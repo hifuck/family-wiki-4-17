@@ -4,48 +4,71 @@
  */
 namespace App\DB;
 
+use App\Utils\HttpClient;
+use Conf\Config;
+use App\Model\User;
+
 class UserDB extends AbstractDB{
 
-    var $TABLE = "gener_user";
-    var $TABLE_HISTORY = "gener_loginHistory";
-    var $TABLE_PROFILE = "gener_user_profile";
+    public $TABLE = "wiki_user_token";
 
     /**
      * 根据id_token验证用户身份
      */
     public function validateUser($userId,$token,$device,$deviceCode = ''){
 
-        if ($device == 3) {
-            //微信登录会挤掉
-            $sql = "SELECT token FROM $this->TABLE_HISTORY WHERE userId = '$userId'  AND device = '$device' AND success = '1' AND is_logout = '0'  order by id desc limit 0,1";
+    }
 
-            $res = $this->uniqueResult($sql);          //这里只取了第一个
-            $storageToken = $res['token'];
+    public function addUserToken(User $user) {
+        $sql = "INSERT INTO $this->TABLE
+                (userId,token,username,nickname,photo,gender,createTime,updateTime)
+                VALUES
+                (?,?,?,?,?,?,now(),now())";
 
-            if ($storageToken == $token) {
-                return true;
+        $params = array($user->userId,$user->token,$user->username,$user->nickname,$user->photo,$user->gender);
+
+        return $this->insert($sql,$params);
+    }
+
+    /**
+     * 检查token是否正确
+     * 
+     * @param $token 令牌
+     * @param $systemUrl 系统url
+     * @return User 用户资料
+     */
+    public function checkToken($token,$systemUrl) {
+        $SSOConfig = Config::getInstance()->getConf('SSO');
+        $httpClient = new HttpClient($SSOConfig['SERVER_URL'],$SSOConfig['SERVER_PORT']);
+
+        $params['action'] = 'account_action';
+        $params['sub_action'] = 'checkSubSystemToken';
+        $params['systemUrl'] = $systemUrl;
+        $params['subToken'] = $token;
+
+        $result = $httpClient->postWithoutHeader('/php/index.php',$params);
+
+        if ($result != false) {
+            $result = \json_decode($result,true);
+
+            if ($result['errorCode'] === '0') {
+                // token正确
+                $userData = $result['data']['user'];
+                $user = new User();
+                $user->userId = $userData['userId'];
+                $user->token = $token;
+                $user->username = $userData['username'];
+                $user->nickname = $userData['nickname'];
+                $user->photo = $userData['photo'];
+                $user->gender = $userData['gender'];
+                $this->addUserToken($user);
+
+                return $user;
+            } else {
+                // token错误
+                return false;
             }
-            return false;
-        } else if ($device == 2) {
-            //手机登录会挤掉
-            $sql = "SELECT token FROM $this->TABLE_HISTORY WHERE userId = '$userId'  AND device = '$device' AND success = '1' AND is_logout = '0' order by id desc limit 0,1";
-
-            $res = $this->uniqueResult($sql);          //这里只取了第一个
-            $storageToken = $res['token'];
-
-            if ($storageToken == $token) {
-                return true;
-            }
-            return false;
-        } else if ($device == 1) {
-            //网页登录默认不会挤掉
-            $sql = "SELECT count(id) FROM $this->TABLE_HISTORY WHERE userId = '$userId' AND success = '1' AND token = '$token'  AND is_logout = '0' ";
-
-            $res = $this->uniqueResult($sql);
-
-            if ($res['count(id)'] > 0) {
-                return true;
-            }
+        } else {
             return false;
         }
     }

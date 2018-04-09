@@ -15,7 +15,7 @@ class HttpClient{
         $this->curl = curl_init();
     }
 
-    public function get($url,$params = '',$header = false){
+    public function get($url,$params = array(),$header = false){
         $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_HEADER, $header);
@@ -29,7 +29,7 @@ class HttpClient{
         return $data;
     }
 
-    public function put($url,$params = '',$header = false){
+    public function put($url,$params = array(),$header = false){
         $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT'); 
@@ -43,7 +43,18 @@ class HttpClient{
         return $data;
     }
 
-    public function post($url,$params = '',$header = false){
+    public function postWithoutHeader($url,$params = array()) {
+        $url = "$this->server:$this->port".$url;
+        curl_setopt($this->curl, CURLOPT_URL, $url);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_POST,true); 
+        curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 2);
+        $data = curl_exec($this->curl);
+        return $data;
+    }
+
+    public function post($url,$params = array(),$header = false){
         $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_HEADER, $header);
@@ -56,7 +67,7 @@ class HttpClient{
         return $data;
     }
 
-    public function delete($url,$params = '',$header = false){
+    public function delete($url,$params = array(),$header = false){
         $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE'); 
@@ -69,7 +80,7 @@ class HttpClient{
         return $data;
     }
 
-    public function head($url,$params = '',$header = false){
+    public function head($url,$params = array(),$header = false){
         $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'HEAD'); 

@@ -69,4 +69,16 @@ abstract class ViewController extends AbstractController
             $this->assign($key, $value, $nocache);
         });
     }
+
+    function onRequest($actionName) {
+        $cookie = $this->request()->getSwooleRequest()->cookie;
+        
+        if(isset($cookie['user'])) {
+            $user = json_decode($cookie['user'],true);
+            $this->assign('nickname',$user['nickname']);
+            $this->assign('photo',$user['photo']);
+        }
+
+        
+    }
 }

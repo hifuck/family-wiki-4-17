@@ -69,6 +69,10 @@ class Config
                 "SERVER_URL" => "http://192.168.3.61",
                 "SERVER_PORT" => 9200,
                 "WORD_TYPE" => "word"
+            ),
+            "SSO" => array(
+                "SERVER_URL" => "http://www.xinhuotech.com",
+                "SERVER_PORT" => 9090
             )
         );
     }

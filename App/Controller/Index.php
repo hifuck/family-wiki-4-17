@@ -43,7 +43,7 @@ class Index extends ViewController
 
     function onRequest($actionName)
     {
-        $this->response()->withHeader('Access-Control-Allow-Origin','*');
+        parent::onRequest($actionName);
     }
 
     function actionNotFound($actionName = null, $arguments = null)

@@ -1,0 +1,13 @@
+{include '../Include/header.html'}
+<div class="main-wrapper">
+    <div class="layout">
+        {if isset($error)}
+            <div class="panel">
+                令牌无效
+            </div>
+        {else}
+            欢迎回来!{$nickname}
+        {/if}
+    </div>
+</div>
+{include '../Include/footer.html'}

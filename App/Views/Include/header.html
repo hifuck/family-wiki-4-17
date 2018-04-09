@@ -78,32 +78,35 @@
                             <button type="submit" class="btn btn-default">搜索</button>
                         </form>
                     </li>
+                    {if isset($nickname)}
 
-                    <li>
-                        <a href="#">登录/注册</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            用户中心
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="/UserProfile/index">我的资料</a>
-                            </li>
-                            <li>
-                                <a href="#">我的词条</a>
-                            </li>
-                            <li>
-                                <a href="/Wordctl/viewAdd">创建词条</a>
-                            </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {$nickname}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/UserProfile/index">我的资料</a>
+                                </li>
+                                <li>
+                                    <a href="#">我的词条</a>
+                                </li>
+                                <li>
+                                    <a href="/Wordctl/viewAdd">创建词条</a>
+                                </li>
 
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="#">退出登录</a>
-                            </li>
-                        </ul>
-                    </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="/UserCtl/logout">退出登录</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {else}
+                        <li>
+                            <a href="http://localhost:4200/#/login/subSystem/localhost:8080%2fUserCtl%2fcheckToken">登录/注册</a>
+                        </li>
+                    {/if}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

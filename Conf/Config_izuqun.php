@@ -69,6 +69,10 @@ class Config
                 "SERVER_URL" => "http://127.0.0.1",
                 "SERVER_PORT" => 9200,
                 "WORD_TYPE" => "word"
+            ),
+            "SSO" => array(
+                "SERVER_URL" => "http://www.izuqun.com",
+                "SERVER_PORT" => 80
             )
         );
     }
