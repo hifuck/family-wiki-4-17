@@ -39,14 +39,14 @@ class UserDB extends AbstractDB{
      */
     public function checkToken($token,$systemUrl) {
         $SSOConfig = Config::getInstance()->getConf('SSO');
-        $httpClient = new HttpClient($SSOConfig['SERVER_URL'],$SSOConfig['SERVER_PORT']);
+        $httpClient = new HttpClient();
 
         $params['action'] = 'account_action';
         $params['sub_action'] = 'checkSubSystemToken';
         $params['systemUrl'] = $systemUrl;
         $params['subToken'] = $token;
 
-        $result = $httpClient->postWithoutHeader('/php/index.php',$params);
+        $result = $httpClient->postWithoutHeader($SSOConfig['SERVER_URL'].':'.$SSOConfig['SERVER_PORT'].'/php/index.php',$params);
 
         if ($result != false) {
             $result = \json_decode($result,true);

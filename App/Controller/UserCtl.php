@@ -46,7 +46,7 @@ class UserCtl extends ViewController{
     function checkToken() {
         $params = $this->request()->getRequestParam();
 
-        $systemUrl = $params['systemUrl'] ?? Constant::SYSTEM_URL;
+        $systemUrl = Constant::SYSTEM_URL;
         $token = $params['token'] ?? null;
 
         if ($systemUrl === null || $token === null) {
@@ -56,6 +56,7 @@ class UserCtl extends ViewController{
 
         $userDB = Util::buildInstance('\App\DB\UserDB');
         $user = $userDB->checkToken($token,$systemUrl);
+
 
         if (!$user) {
             // 令牌无效

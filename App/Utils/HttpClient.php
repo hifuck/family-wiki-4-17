@@ -46,6 +46,7 @@ class HttpClient{
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
         curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 2);
         $data = curl_exec($this->curl);
+        var_dump($url);
         return $data;
     }
 
