@@ -1,0 +1,14 @@
+{include '../Include/header.html'}
+<div class="main-wrapper">
+    <div class="layout">
+        {if isset($error)}
+            {$error}
+        {else}
+            <h1>{$word}</h1>
+            <article>
+                {$content}
+            </article>
+        {/if}
+    </div>
+</div>
+{include '../Include/footer.html'}

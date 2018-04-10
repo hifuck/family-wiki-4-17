@@ -1,0 +1,14 @@
+{include '../Include/header.html'}
+<div class="main-wrapper">
+    <div class="layout">
+        {if isset($error)}
+            {$error}
+        {else}
+            {foreach $hits['hits'] as $item}
+                {$item['_source']['word']}
+                {$item['_source']['content']}
+            {/foreach}
+        {/if}
+    </div>
+</div>
+{include '../Include/footer.html'}

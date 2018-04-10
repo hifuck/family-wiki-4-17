@@ -17,6 +17,7 @@ use App\Utils\Check;
 use App\Model\Word;
 use Conf\ErrorCode;
 use App\Task\AsyncTask;
+use App\Model\ESQuery;
 
 class WordCtl extends ViewController
 {
@@ -24,6 +25,51 @@ class WordCtl extends ViewController
     function index()
     {
 
+    }
+
+    /**
+     * 词条详情页
+     */
+    function word() {
+        $params = $this->request()->getRequestParam();
+
+        $api = $params['api'] ?? null;
+        $word = $params['word'] ?? null;
+
+        if ($word == null) {
+            if ($api == null) {
+                $this->assign('error','参数缺失');
+                $this->fetch('Word/word.html');
+                return;
+            } else {
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,"参数缺失");
+                return;
+            }
+        }
+
+        $wordDB = Util::buildInstance('\App\DB\WordDB');
+        $word = $wordDB->getWord($word);
+
+        if ($word == null) {
+            if ($api == null) {
+                $this->assign('error','该词条不存在');
+                $this->fetch('Word/word.html');
+                return;
+            } else {
+                Util::printResult($this->response(),ErrorCode::ERROR_SQL_QUERY,"该词条不存在");
+                return;
+            }
+        }
+
+         if ($api == null) {
+            $this->assignMap($word);
+            $this->fetch('Word/word.html');
+            return;
+         } else {
+            $data['word'] = $word;
+            Util::printResult($this->response(),ErrorCode::ERROR_SUCCESS,$data);
+            return;
+         }
     }
 
     function viewAdd() {
@@ -41,7 +87,7 @@ class WordCtl extends ViewController
         $api = $params['api'] ?? null;
 
         $word = new Word();
-        $word->word = $params['word'] ?? null;
+        $word->word = trim($params['word'] ?? null);
         $word->content = $params['content'] ?? null;
         $word->type = Check::checkInteger($params['type'] ?? null);
         $word->template = Check::checkInteger($params['template'] ?? null);
@@ -56,15 +102,6 @@ class WordCtl extends ViewController
 
         $wordDB = Util::buildInstance('\App\DB\WordDB');
         $wordId = $wordDB->addWordVerify($word);
-
-        if ($wordId > 0) {
-            //投递异步任务
-            $word->id = $wordId;
-            $word->isDelete = 0;
-            $word->createTime = Util::getStandardCurrentTime();
-            $word->updateTime = $word->createTime;
-            AsyncTask::addWordSearchTask($word);
-        }
 
         $data['wordId'] = $wordId;
 
@@ -95,13 +132,48 @@ class WordCtl extends ViewController
     /**
      * 搜索词条
      */
-    function search(string $word) {
+    function search() {
+        $params = $this->request()->getRequestParam();
 
+        $api = $params['api'] ?? null;
+        $word = $params['word'] ?? null;
+
+        if ($word == null) {
+            if ($api == null) {
+                $this->assign('error','参数缺失');
+                $this->fetch('Word/word.html');
+                return;
+            } else {
+                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,"参数缺失");
+                return;
+            }
+        }
+
+        $esQuery = new ESQuery();
+        $esQuery->setPaging(1,10);
+        $esQuery->setMultiMatch(array("word","content"),$word);
+        
+        $wordES = Util::buildInstance('\App\ES\WordES');
+        $result = $wordES->searchWord($esQuery->toString());
+
+        $hits = $result->hits;          //获取命中的条目
+
+        var_dump($hits);
+
+        if ($api != null) {
+            $data['hits'] = $hits;
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+            return;
+        } else {
+            $this->assign('hits',$hits);
+            $this->fetch("Word/search.html");
+            return;
+        }
     }
 
     function onRequest($actionName)
     {
-
+        parent::onRequest($actionName);
         // $params = $this->request()->getRequestParam();
         // $idToken = $params['id_token'] ?? null;
         // $deviceCode = $params['deviceCode'] ?? '';

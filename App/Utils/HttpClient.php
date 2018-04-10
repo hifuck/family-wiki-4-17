@@ -9,14 +9,11 @@ class HttpClient{
     public $curl = null;
     public $server = null;
     public $port = null;
-    public function __construct($server,$port){
-        $this->server = $server;
-        $this->port = $port;
+    public function __construct(){
         $this->curl = curl_init();
     }
 
     public function get($url,$params = array(),$header = false){
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_HEADER, $header);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('content-type: application/json;charset=UTF-8')); 
@@ -30,7 +27,6 @@ class HttpClient{
     }
 
     public function put($url,$params = array(),$header = false){
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'PUT'); 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('content-type: application/json;charset=UTF-8')); 
@@ -44,7 +40,6 @@ class HttpClient{
     }
 
     public function postWithoutHeader($url,$params = array()) {
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->curl, CURLOPT_POST,true); 
@@ -55,7 +50,6 @@ class HttpClient{
     }
 
     public function post($url,$params = array(),$header = false){
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_HEADER, $header);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('content-type: application/json;charset=UTF-8')); 
@@ -68,7 +62,6 @@ class HttpClient{
     }
 
     public function delete($url,$params = array(),$header = false){
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'DELETE'); 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('content-type: application/json;charset=UTF-8')); 
@@ -81,7 +74,6 @@ class HttpClient{
     }
 
     public function head($url,$params = array(),$header = false){
-        $url = "$this->server:$this->port".$url;
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'HEAD'); 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, array('content-type: application/json;charset=UTF-8')); 

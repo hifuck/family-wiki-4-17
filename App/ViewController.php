@@ -65,9 +65,11 @@ abstract class ViewController extends AbstractController
      */
     function assignMap($map, $nocache = false) {
         $self = $this;
-        \array_walk($map, function($value, $key) use($self, $nocache) {
-            $this->assign($key, $value, $nocache);
-        });
+        if (is_array($map)) {
+            \array_walk($map, function($value, $key) use($self, $nocache) {
+                $this->assign($key, $value, $nocache);
+            });
+        }
     }
 
     function onRequest($actionName) {

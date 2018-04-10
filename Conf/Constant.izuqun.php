@@ -17,6 +17,6 @@ class Constant {
                         "www.izuqun.com",
                         "www.xinhuotech.com:9089",
                         "www.xinhuotech.com:9090"];
-    const SSO_SYSTEM_URL = "localhost:4200";
-    const SYSTEM_URL = "localhost:8080";
+    const SSO_SYSTEM_URL = "www.izuqun.com";
+    const SYSTEM_URL = "wiki.izuqun.com";
 }

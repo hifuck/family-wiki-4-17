@@ -1,6 +1,6 @@
 <?php
 /**
- * 用户资料类
+ * 用户行为类
  * @author: jiangpengfei
  * @date:   2018-04-08
  */
@@ -18,7 +18,19 @@ use Conf\ErrorCode;
 class UserCtl extends ViewController{
 
     function index() {
-        $this->fetch('UserCenter/UserProfile/index.html');
+        $this->profile();
+    }
+
+    function profile() {
+        $this->assign('profile_active','active');
+        $this->assign('word_active','');
+        $this->fetch('UserCtl/index.html');
+    }
+
+    function myWord() {
+        $this->assign('profile_active','');
+        $this->assign('word_active','active');
+        $this->fetch('UserCtl/myword.html');
     }
 
     function login() {

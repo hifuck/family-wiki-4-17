@@ -28,17 +28,7 @@ class Index extends ViewController
     {
         $params = $this->request()->getRequestParam();
 
-        $api = $params['api'] ?? null;
-
-        if ($api !== null) {
-            // 返回接口数据
-            $data['test'] = 'test data';
-            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
-        } else {
-            // 渲染页面直接输出
-            $this->assign('user',"xinhuo");
-            $this->fetch('Index/index.html');
-        }
+        $this->fetch('Index/index.html');
     }
 
     function onRequest($actionName)

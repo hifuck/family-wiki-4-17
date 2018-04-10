@@ -71,11 +71,15 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <form class="navbar-form">
+                        <form name="getWordForm" action="/WordCtl/word" method="GET" class="navbar-form" onsubmit="return getWordForm.word.value != ''">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="输入词条">
+                                <input type="text" name="word" class="form-control" placeholder="输入词条">
                             </div>
-                            <button type="submit" class="btn btn-default">搜索</button>
+                            <button type="submit" class="btn btn-default">进入词条</button>
+                            <button type="button" id = "searchInputBtn" class="btn btn-default">搜索词条</button>
+                        </form>
+                        <form name="searchWordForm" action="/WordCtl/search" method="GET">
+                            <input type="hidden" name="word" id="searchInput">
                         </form>
                     </li>
                     {if isset($nickname)}
@@ -87,13 +91,13 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/UserProfile/index">我的资料</a>
+                                    <a href="/UserCtl/profile">我的资料</a>
                                 </li>
                                 <li>
-                                    <a href="#">我的词条</a>
+                                    <a href="/UserCtl/myWord">我的词条</a>
                                 </li>
                                 <li>
-                                    <a href="/Wordctl/viewAdd">创建词条</a>
+                                    <a href="/WordCtl/viewAdd">创建词条</a>
                                 </li>
 
                                 <li role="separator" class="divider"></li>
@@ -113,3 +117,20 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+
+    <script>
+        window.onload = function () {
+            searchBtn = document.getElementById("searchInputBtn");
+            searchBtn.onclick = function () {
+                wordValue = getWordForm.word.value;
+
+                if (wordValue != '') {
+                    searchWordForm.word.value = wordValue;
+                    searchWordForm.submit();
+                }else {
+                    return false;
+                }
+            }
+        }
+        
+    </script>

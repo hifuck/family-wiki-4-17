@@ -29,7 +29,7 @@ abstract class AbstractES{
      */
     protected function search($esRequest){
         $this->httpClient = $this->pool->pop();
-        $url = '/'.$esRequest->index.'/'.$esRequest->type.'/_search';
+        $url = $this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/_search';
         $result = $this->httpClient->get($url,$esRequest->searchStr);
         $this->retrieve();
         return new ESResponse($result);
@@ -40,7 +40,7 @@ abstract class AbstractES{
      */
     protected function get($esRequest){
         $this->httpClient = $this->pool->pop();
-        $result = $this->httpClient->get('/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id);
+        $result = $this->httpClient->get($this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id);
         $this->retrieve();
         return new ESResponse($result);
     }
@@ -50,7 +50,7 @@ abstract class AbstractES{
      */
     protected function put($esRequest){
         $this->httpClient = $this->pool->pop();
-        $url = '/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id;
+        $url = $this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id;
 
         $result = $this->httpClient->post($url,$esRequest->source);
 
@@ -64,7 +64,7 @@ abstract class AbstractES{
      */
     protected function update($esRequest){
         $this->httpClient = $this->pool->pop();
-        $url = '/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id.'/_update';
+        $url = $this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id.'/_update';
 
         $result = $this->httpClient->post($url,$esRequest->doc);
 
@@ -79,7 +79,7 @@ abstract class AbstractES{
      */
     protected function delete($esRequest){
         $this->httpClient = $this->pool->pop();
-        $result = $this->httpClient->delete('/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id);
+        $result = $this->httpClient->delete($this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/'.$esRequest->id);
         $this->retrieve();
         return new ESResponse($result);
     }

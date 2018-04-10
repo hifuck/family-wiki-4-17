@@ -18,6 +18,14 @@ class WordES extends AbstractES{
         $this->config = Config::getInstance()->getConf('ES');
     }
 
+    public function searchWord($searchStr){
+        $esRequest = new ESRequest();
+        $esRequest->index = $this->config['WORD_TYPE'];
+        $esRequest->type = $this->config['WORD_TYPE'];
+        $esRequest->searchStr = $searchStr;
+        return $this->search($esRequest);
+    }
+
     /**
      * 删除词条
      */

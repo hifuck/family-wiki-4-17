@@ -14,7 +14,9 @@ class WordDB extends AbstractDB
     public $TABLE_TYPE = 'wiki_word_type';
     public $TABLE_TEMPLATE = 'wiki_word_template';
 
-
+    /**
+     * 增加需审核的词条
+     */
     public function addWordVerify(Word $word)
     {
         $sql = "INSERT INTO $this->TABLE_VERIFY 
@@ -26,16 +28,25 @@ class WordDB extends AbstractDB
         return $this->insert($sql, $params);
     }
 
+    /**
+     * 编辑需审核的词条
+     */
     public function editWordVerify(Word $word)
     {
 
     }
 
+    /**
+     * 删除需审核的词条
+     */
     public function deleteWordVerify(int $wordId)
     {
 
     }
 
+    /**
+     * 获取需审核的词条
+     */
     public function getWordVerify(int $wordId)
     {
         $sql = "SELECT id,word,content,type,template,version,isDelete,createTime,updateTime 
@@ -57,7 +68,9 @@ class WordDB extends AbstractDB
 
     public function getWord(string $word)
     {
+        $sql = "SELECT id,word,content,type,template,version,createTime,updateTime FROM $this->TABLE where word='$word' AND isDelete = '0' ";
 
+        return $this->uniqueResult($sql);
     }
 
 }
