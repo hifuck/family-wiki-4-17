@@ -14,6 +14,7 @@ use App\DB\UserDB;
 use App\Utils\Util;
 use App\Utils\Check;
 use Conf\ErrorCode;
+use Conf\Constant;
 
 class UserCtl extends ViewController{
 
@@ -45,7 +46,7 @@ class UserCtl extends ViewController{
     function checkToken() {
         $params = $this->request()->getRequestParam();
 
-        $systemUrl = $params['systemUrl'] ?? 'localhost:8080/UserCtl/checkToken';
+        $systemUrl = $params['systemUrl'] ?? Constant::SYSTEM_URL;
         $token = $params['token'] ?? null;
 
         if ($systemUrl === null || $token === null) {
