@@ -13,6 +13,7 @@ class WordDB extends AbstractDB
     public $TABLE_VERIFY = 'wiki_word_verify';
     public $TABLE_TYPE = 'wiki_word_type';
     public $TABLE_TEMPLATE = 'wiki_word_template';
+    public $TABLE_HISTORY = 'wiki_history';
 
     /**
      * 增加需审核的词条
@@ -51,7 +52,7 @@ class WordDB extends AbstractDB
      */
     public function getWordVerifyById(int $wordId)
     {
-        $sql = "SELECT id,word,content,type,template,version,isDelete,createTime,updateTime 
+        $sql = "SELECT id,word,content,type,template,version,isDelete,createTime,updateTime,author,authorName 
         FROM $this->TABLE_VERIFY WHERE id = '$wordId' ";
 
         $result = $this->uniqueResult($sql);
@@ -65,6 +66,8 @@ class WordDB extends AbstractDB
         $word->isDelete = $result['isDelete'];
         $word->createTime = $result['createTime'];
         $word->updateTime = $result['updateTime'];
+        $word->author = $result['author'];
+        $word->authorName = $result['authorName'];
         return $word;
 
     }
@@ -79,7 +82,7 @@ class WordDB extends AbstractDB
     {
         $offset = ($pageIndex - 1) * $pageSize;
 
-        $sql = "SELECT id,word,content,type,template,version,isDelete,createTime,updateTime 
+        $sql = "SELECT id,word,content,type,template,version,isDelete,createTime,updateTime,author,authorName 
         FROM $this->TABLE_VERIFY WHERE isVerify = 0 AND isDelete = 0 ORDER BY id DESC LIMIT $offset, $pageSize";
 
         return $this->query($sql);
@@ -116,7 +119,7 @@ class WordDB extends AbstractDB
      */
     public function addWord($word)
     {
-        $sql = "INSERT INTO $this->TABLE(word,content,type,template,version,isDelete,createTime,updateTime) 
+        $sql = "INSERT INTO $this->TABLE(word,content,type,template,version,isDelete,createTime,updateTime,author,authorName) 
           VALUES (
           '$word->word',
           '$word->content',
@@ -125,7 +128,9 @@ class WordDB extends AbstractDB
           '$word->version',
           '$word->isDelete',
           '$word->createTime',
-          '$word->updateTime'
+          '$word->updateTime',
+          '$word->author',
+          '$word->authorName'
           )
         ";
         return $this->insert($sql);
@@ -136,7 +141,7 @@ class WordDB extends AbstractDB
      * @param $wordVerifyId
      * @return null
      */
-    public function wordVerifyIdIsExist($wordVerifyId)
+    public function wordVerifyIdIsExist(int $wordVerifyId)
     {
         $sql = "SELECT count('id') FROM $this->TABLE_VERIFY WHERE id=? AND isDelete = 0 AND isVerify = 0";
         $params = [$wordVerifyId];
@@ -148,11 +153,60 @@ class WordDB extends AbstractDB
         }
     }
 
+    /**
+     * 根据词条名字获取词条内容
+     * @param string $word
+     * @return null
+     */
     public function getWord(string $word)
     {
-        $sql = "SELECT id,word,content,type,template,version,createTime,updateTime FROM $this->TABLE where word='$word' AND isDelete = '0' ";
+        $sql = "SELECT id,word,content,type,template,version,createTime,updateTime,author,authorName FROM $this->TABLE where word='$word' AND isDelete = '0' ";
 
         return $this->uniqueResult($sql);
     }
 
+    /**
+     * 更新词条  版本+1
+     * @param $word
+     * @param $id
+     * @return bool
+     */
+    public function updateWord($word, $id)
+    {
+        $sql = "UPDATE $this->TABLE SET 
+          word='$word->word',
+          content='$word->content',
+          type='$word->type',
+          template='$word->template',
+          version='$word->version',
+          isDelete='$word->isDelete',
+          createTime='$word->createTime',
+          updateTime= '$word->updateTime',
+          author = '$word->author',
+          authorName = '$word->authorName'
+        WHERE id=? AND isDelete = 0";
+        $params = [$id];
+        return $this->update($sql, $params);
+    }
+
+    /**
+     * 已经存在的词条 添加词条记录
+     * @param $word
+     * @return bool
+     */
+    public function addWordToHistory($word)
+    {
+        $sql = "INSERT INTO $this->TABLE_HISTORY(word,content,type,template,version,author,createTime,updateTime) 
+          VALUES (
+          '$word->word',
+          '$word->content',
+          '$word->type',
+          '$word->template',
+          '$word->version',
+          '$word->author',
+          '$word->createTime',
+          '$word->updateTime'
+          )";
+        return $this->insert($sql);
+    }
 }

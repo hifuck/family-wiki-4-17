@@ -57,36 +57,26 @@ class WordTemplate extends ViewController
             $name = Check::check($params['name'] ?? null);
             $content = Check::check($params['content'] ?? null);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/WordTemplate/add.html', $api);
             return;
+        }
 
+        if ($typeId == null || $name == null || $content == null) {
+            Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '缺少参数', 'Admin/WordTemplate/add.html', $api);
+            return;
         }
 
         $wordDb = new WordTemplateDB();
 
+        $result = $wordDb->addWordTemplate($typeId, $name, $content);
+
         if ($api !== null) {
-            if ($typeId == null || $name == null || $content == null) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
-                return;
-            }
-
-            $result = $wordDb->addWordTemplate($typeId, $name, $content);
-
             $data['templateId'] = $result;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
-
         } else {
-
-            if ($typeId == null || $name == null || $content == null) {
-                $this->assign('error', '缺少参数');
-                $this->fetch('Admin/WordTemplate/add.html');
-                return;
-            }
-
-            $result = $wordDb->addWordTemplate($typeId, $name, $content);
             $this->assign('row', $result);
+            $this->fetch('Admin/WordTemplate/add.html');
         }
-
     }
 
     /**
@@ -104,31 +94,23 @@ class WordTemplate extends ViewController
             $name = Check::check($params['name'] ?? null);
             $content = Check::check($params['content'] ?? null);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/WordTemplate/edit.html', $api);
+            return;
+        }
+
+        if ($templateId == null || $typeId == null || $name == null || $content == null) {
+            Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '缺少参数', 'Admin/WordTemplate/edit.html', $api);
             return;
         }
 
         $wordTemplateDb = new WordTemplateDB();
 
+        $result = $wordTemplateDb->editWordTemplateById($templateId, $typeId, $name, $content);
+
         if ($api !== null) {
-            if ($templateId == null || $typeId == null || $name == null || $content == null) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
-                return;
-            }
-
-            $result = $wordTemplateDb->editWordTemplateById($templateId, $typeId, $name, $content);
-
             $data['updateRow'] = $result;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
-            if ($templateId == null || $typeId == null || $name == null || $content == null) {
-                $this->assign('error', '缺少参数');
-                $this->fetch('Admin/WordTemplate/edit.html');
-                return;
-            }
-
-            $result = $wordTemplateDb->editWordTemplateById($templateId, $typeId, $name, $content);
-
             $this->assign('updateRow', $result);
             $this->fetch('Admin/WordTemplate/edit.html');
         }
@@ -146,30 +128,22 @@ class WordTemplate extends ViewController
         try {
             $templateId = Check::checkInteger($params['templateId'] ?? null);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/WordTemplate/del.html', $api);
+            return;
+        }
+
+        if ($templateId == null) {
+            Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '缺少参数', 'Admin/WordTemplate/del.html', $api);
+            return;
         }
 
         $wordTemplateDb = new WordTemplateDB();
+        $result = $wordTemplateDb->delWordTemplateById($templateId);
 
         if ($api !== null) {
-            if ($templateId == null) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
-                return;
-            }
-
-            $result = $wordTemplateDb->delWordTemplateById($templateId);
-
             $data['delRow'] = $result;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
-            if ($templateId == null) {
-                $this->assign('error', '缺少参数');
-                $this->fetch('Admin/WordTemplate/del.html');
-                return;
-            }
-
-            $result = $wordTemplateDb->delWordTemplateById($templateId);
-
             $this->assign('delRow', $result);
             $this->fetch('Admin/WordTemplate/del.html');
         }
@@ -187,12 +161,11 @@ class WordTemplate extends ViewController
             $pageIndex = Check::checkInteger($params['pageIndex'] ?? 1);
             $pageSize = Check::checkInteger($params['pageSize'] ?? 10);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/WordTemplate/index.html', $api);
             return;
         }
 
         $wordTemplateDb = new WordTemplateDB();
-
         $result = $wordTemplateDb->getWordTemplatePaging($pageIndex, $pageSize);
 
         $data['pageIndex'] = $pageIndex;
@@ -204,6 +177,7 @@ class WordTemplate extends ViewController
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
             $this->assign('data', $data);
+            $this->fetch('Admin/WordTemplate/index.html');
         }
     }
 
@@ -218,36 +192,30 @@ class WordTemplate extends ViewController
         try {
             $id = Check::checkInteger($params['id'] ?? null);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/WordTemplate/edit.html', $api);
+            return;
+        }
+
+        if ($id == null) {
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING, '缺少参数', 'Admin/WordTemplate/edit.html', $api);
             return;
         }
 
         $wordTemplateDb = new WordTemplateDB();
+        $result = $wordTemplateDb->getWordTemplateById($id);
 
         if ($api !== null) {
-            if ($id == null) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
-                return;
-            }
-
-            $result = $wordTemplateDb->getWordTemplateById($id);
-
             $data['content'] = $result;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
-
-            $result = $wordTemplateDb->getWordTemplateById($id);
-
             $this->assign('data', $result);
-            // $this->fetch('Admin/WordTemplate/edit.html');
         }
     }
 
     function onRequest($actionName)
     {
         // TODO: Implement onRequest() method.
-        $this->response()->withHeader('Access-Control-Allow-Origin', '*');
-        $this->wordTemplateDB = Util::buildInstance('\App\DB\WordTemplateDB');
+        parent::onRequest($actionName);
     }
 
     function actionNotFound($actionName = null, $arguments = null)
