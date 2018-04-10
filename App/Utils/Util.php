@@ -98,4 +98,13 @@ class Util{
 
         return $instance;
     }
+
+    public static function printError(&$controller,$errorCode,$errorMsg,$tpl,$isApi) {
+        if ($isApi != null) {
+            Util::printResult($controller->response(),$errorCode,$errorMsg);
+        } else {
+            $controller->assign('error',$errorMsg);
+            $controller->fetch($tpl);
+        }
+    }
 }

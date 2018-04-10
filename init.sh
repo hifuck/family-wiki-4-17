@@ -22,6 +22,10 @@ curl -H "content-type:application/json"  -XPUT "http://${1}:${2}/word" -d '
                   "type":"keyword",
                   "index":"true"
               },
+              "abstract":{
+                  "type":"text",
+                  "index":"false"
+              },
               "content":{
                   "type": "text",
                   "analyzer": "ik_max_word",

@@ -102,6 +102,20 @@ class ESQuery{
         $this->query['query']['terms'][$key] = $fields;
     }
 
+    /**
+     * 设置排除部分字段
+     */
+    public function setSourceExclude($excludes) {
+        $this->query['_source']['excludes'] = $excludes;
+    }
+
+    /**
+     * 设置只取部分字段
+     */
+    public function setSourceInclude($includes) {
+        $this->query['_source']['includes'] = $includes;
+    }
+
     public function toString(){
         return json_encode($this->query);
     }

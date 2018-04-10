@@ -37,28 +37,16 @@ class WordCtl extends ViewController
         $word = $params['word'] ?? null;
 
         if ($word == null) {
-            if ($api == null) {
-                $this->assign('error','参数缺失');
-                $this->fetch('Word/word.html');
-                return;
-            } else {
-                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,"参数缺失");
-                return;
-            }
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'参数缺失','Word/word.html',$api);
+            return;
         }
 
         $wordDB = Util::buildInstance('\App\DB\WordDB');
         $word = $wordDB->getWord($word);
 
         if ($word == null) {
-            if ($api == null) {
-                $this->assign('error','该词条不存在');
-                $this->fetch('Word/word.html');
-                return;
-            } else {
-                Util::printResult($this->response(),ErrorCode::ERROR_SQL_QUERY,"该词条不存在");
-                return;
-            }
+            Util::printError($this,ErrorCode::ERROR_SQL_QUERY,'该词条不存在','Word/word.html',$api);
+            return;
         }
 
          if ($api == null) {
@@ -95,7 +83,7 @@ class WordCtl extends ViewController
 
         // 检查参数是否齐全
         if (in_array(null, array($word->word, $word->content), true)) {
-            Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/add.html',$api);
             return;
         }
 
@@ -139,26 +127,19 @@ class WordCtl extends ViewController
         $word = $params['word'] ?? null;
 
         if ($word == null) {
-            if ($api == null) {
-                $this->assign('error','参数缺失');
-                $this->fetch('Word/word.html');
-                return;
-            } else {
-                Util::printResult($this->response(),ErrorCode::ERROR_PARAM_MISSING,"参数缺失");
-                return;
-            }
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/search.html',$api);
+            return;
         }
 
         $esQuery = new ESQuery();
         $esQuery->setPaging(1,10);
         $esQuery->setMultiMatch(array("word","content"),$word);
-        
+        $esQuery->setSourceExclude(array('content'));
+
         $wordES = Util::buildInstance('\App\ES\WordES');
         $result = $wordES->searchWord($esQuery->toString());
 
         $hits = $result->hits;          //获取命中的条目
-
-        var_dump($hits);
 
         if ($api != null) {
             $data['hits'] = $hits;
