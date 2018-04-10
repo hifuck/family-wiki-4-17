@@ -16,4 +16,6 @@ class Word {
     public $createTime;
     public $updateTime;
     public $subContent;
+    public $author;
+    public $authorName;
 }

@@ -86,14 +86,41 @@ class Word extends ViewController
 
         $result = $wordDb->wordIsVerified($isVerify, $wordVerifyId);
 
-        // 审核通过 1 、 不通过 -1
+        // 审核通过 1
         if ($result > 0 && $isVerify == 1) {
             //审核通过
-            $word = $wordDb->getWordVerifyById($wordVerifyId);
-            $wordId = $wordDb->addWord($word);
+            $wordObj = $wordDb->getWordVerifyById($wordVerifyId);
+
+            $oldWord = $wordDb->getWord($wordObj->word);
+
+            //词条已经存在
+            if ($oldWord !== null) {
+                //创建对象 oldWordModel
+                $oldWordModel = new \App\Model\Word();
+                $oldWordModel->word = $oldWord['word'];
+                $oldWordModel->content = $oldWord['content'];
+                $oldWordModel->type = $oldWord['type'];
+                $oldWordModel->template = $oldWord['template'];
+                $oldWordModel->version = $oldWord['version'];
+                $oldWordModel->author = $oldWord['author'];
+                $oldWordModel->createTime = $oldWord['createTime'];
+                $oldWordModel->updateTime = $oldWord['updateTime'];
+                //存在的词条添加到历史记录中
+                $wordHistoryId = $wordDb->addWordToHistory($oldWordModel);
+                if ($wordHistoryId > 0) {
+                    $wordObj->version = $oldWord['version'] + 1;
+                    $updateRow = $wordDb->updateWord($wordObj, $oldWord['id']);
+                    if ($updateRow > 0) {
+                        $wordId = $oldWord['id'];
+                    }
+                }
+
+            } else {
+                $wordId = $wordDb->addWord($wordObj);
+            }
 
             // 截取内容
-            $content = $word->content;
+            $content = $wordObj->content;
             $len = mb_strlen($content);
             if ($len > 250) {
                 $subContent = mb_substr($content, 0, 250);
@@ -102,6 +129,8 @@ class Word extends ViewController
             }
 
             if ($wordId > 0) {
+                //word 模型
+                $word = new \App\Model\Word();
                 //投递异步任务
                 $word->id = $wordId;
                 $word->subContent = $subContent;
@@ -114,6 +143,7 @@ class Word extends ViewController
             $data['updateRow'] = $result;
             $data['wordId'] = $wordId;
         } else {
+            // 不通过
             $data['updateRow'] = $result;
         }
 

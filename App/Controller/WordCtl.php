@@ -8,6 +8,7 @@
 namespace App\Controller;
 
 
+use App\Utils\CheckException;
 use Core\AbstractInterface\AbstractController;
 use Core\Http\Message\Status;
 use App\ViewController;
@@ -74,19 +75,22 @@ class WordCtl extends ViewController
 
         $api = $params['api'] ?? null;
 
-        $word = new Word();
-        $word->word = trim($params['word'] ?? null);
-        $word->content = $params['content'] ?? null;
-        $word->type = Check::checkInteger($params['type'] ?? null);
-        $word->template = Check::checkInteger($params['template'] ?? null);
-        $word->version = 1;
-
+        try{
+            $word = new Word();
+            $word->word = trim($params['word'] ?? null);
+            $word->content = $params['content'] ?? null;
+            $word->type = Check::checkInteger($params['type'] ?? null);
+            $word->template = Check::checkInteger($params['template'] ?? null);
+            $word->version = 1;
+        }catch (CheckException $e){
+            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/add.html',$api);
+            return;
+        }
         // 检查参数是否齐全
         if (in_array(null, array($word->word, $word->content), true)) {
             Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/add.html',$api);
             return;
         }
-
 
         $wordDB = Util::buildInstance('\App\DB\WordDB');
         $wordId = $wordDB->addWordVerify($word);
