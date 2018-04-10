@@ -17,6 +17,7 @@ use App\Utils\Util;
 use App\Utils\Check;
 use App\Model\Word;
 use Conf\ErrorCode;
+use Conf\Constant;
 use App\Task\AsyncTask;
 use App\Model\ESQuery;
 
@@ -62,15 +63,27 @@ class WordCtl extends ViewController
     }
 
     function viewAdd() {
-        // 渲染页面直接输出
-        $this->assign('user',"xinhuo");
-        $this->fetch('Word/add.html');
+        if (!$this->checkLogin() ) {
+            $ssoUrl = Constant::SSO_SYSTEM_URL;
+            $systemUrl = Constant::SYSTEM_URL;
+            $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
+            return;
+        } else {
+            // 渲染页面直接输出
+            $this->assign('user',"xinhuo");
+            $this->fetch('Word/add.html');
+        }
     }
 
     /**
      * 添加词条
      */
     function add() {
+
+        if (!$this->checkLogin() ) {
+            return;
+        }
+
         $params = $this->request()->getRequestParam();
 
         $api = $params['api'] ?? null;
@@ -81,6 +94,8 @@ class WordCtl extends ViewController
             $word->content = $params['content'] ?? '';
             $word->type = Check::checkInteger($params['type'] ?? '');
             $word->template = Check::checkInteger($params['template'] ?? '');
+            $word->author = $this->user['userId'];
+            $word->authorName = $this->user['username'];
             $word->version = 1;
         }catch (CheckException $e){
             Util::printError($this,$e->getCode(),$e->getMessage(),'Word/add.html',$api);

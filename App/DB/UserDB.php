@@ -15,8 +15,17 @@ class UserDB extends AbstractDB{
     /**
      * 根据id_token验证用户身份
      */
-    public function validateUser($userId,$token,$device,$deviceCode = ''){
+    public function validateUser($userId,$token,$username){
+        $sql = "SELECT id FROM $this->TABLE WHERE 
+        userId = '$userId' AND token = '$token' 
+        AND username = '$username' AND isDelete = '0' limit 0,1";
+        $result = $this->query($sql);
 
+        if (count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function addUserToken(User $user) {

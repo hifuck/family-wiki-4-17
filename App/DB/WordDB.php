@@ -21,10 +21,10 @@ class WordDB extends AbstractDB
     public function addWordVerify(Word $word)
     {
         $sql = "INSERT INTO $this->TABLE_VERIFY 
-        (word,content,type,template,version,isDelete,createTime,updateTime)
-        VALUES(?,?,?,?,?,0,now(),now())";
+        (word,content,type,template,version,author,authorName,isDelete,createTime,updateTime)
+        VALUES(?,?,?,?,?,?,?,0,now(),now())";
 
-        $params = array($word->word, $word->content, $word->type, $word->template, $word->version);
+        $params = array($word->word, $word->content, $word->type, $word->template, $word->version, $word->author, $word->authorName);
 
         return $this->insert($sql, $params);
     }

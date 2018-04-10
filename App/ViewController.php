@@ -7,6 +7,7 @@ use Core\Component\Sys\SysConst;
 use Core\AbstractInterface\AbstractController;
 use Core\Http\Request;
 use Core\Http\Response;
+use App\Utils\Util;
 
 /**
  * 视图控制器
@@ -17,6 +18,7 @@ use Core\Http\Response;
 abstract class ViewController extends AbstractController
 {
     protected $view;
+    protected $user = null;
 
     /**
      * 初始化模板引擎
@@ -80,8 +82,21 @@ abstract class ViewController extends AbstractController
             $user = json_decode($cookie['user'],true);
             $this->assign('nickname',$user['nickname']);
             $this->assign('photo',$user['photo']);
+            $this->user = $user;
+        } else {
+            $this->user = null;
         }
+    }
 
-        
+    function checkLogin() {
+        if ($this->user != null) {
+            $userId = $this->user['userId'];
+            $username = $this->user['username'];
+            $token = $this->user['token'];
+            // 验证该用户的userId和token和username是否对应
+            $userDB = Util::buildInstance('App\DB\UserDB');
+            return $userDB->validateUser($userId,$token,$username);
+        }
+        return false;
     }
 }
