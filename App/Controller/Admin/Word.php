@@ -16,7 +16,6 @@ use App\Utils\CheckException;
 use App\Utils\Util;
 use App\ViewController;
 use Conf\ErrorCode;
-use PhpParser\Error;
 
 class Word extends ViewController
 {
@@ -38,12 +37,11 @@ class Word extends ViewController
             $pageIndex = Check::checkInteger($params['pageIndex'] ?? 1);
             $pageSize = Check::checkInteger($params['pageSize'] ?? 10);
         } catch (CheckException $e) {
-            $this->response()->write($e->errorMessage());
+            Util::printError($this, $e->getCode(), $e->getMessage(), '', $api);
             return;
         }
 
         $wordDb = new WordDB();
-
         $result = $wordDb->getWordVerifyReviewPaging($pageIndex, $pageSize);
 
         if ($api !== null) {
@@ -66,90 +64,70 @@ class Word extends ViewController
         $params = $this->request()->getRequestParam();
         $api = $params['api'] ?? null;
 
-        try{
+        try {
             $isVerify = Check::checkInteger($params['isVerify'] ?? null);
             $wordVerifyId = Check::checkInteger($params['wordVerifyId'] ?? null);
-        }catch (CheckException $e){
-            $this->response()->write($e->errorMessage());
+        } catch (CheckException $e) {
+            Util::printError($this, $e->getCode(), $e->getMessage(), 'Admin/Word/index.html', $api);
+            return;
+        }
+
+        if ($wordVerifyId == null || $isVerify == null) {
+            Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '缺少参数', 'Admin/Word/index.html', $api);
             return;
         }
 
         $wordDb = new WordDB();
 
-        if ($api !== null) {
-            if ($wordVerifyId == null || $isVerify == null) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_MISSING, '缺少参数');
-                return;
-            }
+        if (!$wordDb->wordVerifyIdIsExist($wordVerifyId)) {
+            Util::printError($this, ErrorCode::ERROR_PARAM_WRONG, '待审核的词条不存在', 'Admin/Word/index.html', $api);
+            return;
+        }
 
-            if (!$wordDb->wordVerifyIdIsExist($wordVerifyId)) {
-                Util::printResult($this->response(), ErrorCode::ERROR_PARAM_WRONG, '待审核的词条不存在');
-                return;
-            }
-            // 审核通过 1 、 不通过 -1
-            $result = $wordDb->wordIsVerified($isVerify, $wordVerifyId);
+        $result = $wordDb->wordIsVerified($isVerify, $wordVerifyId);
 
-            if ($result > 0 && $isVerify == 1) {
-                //审核通过
-                $word = $wordDb->getWordVerifyById($wordVerifyId);
-                $wordId = $wordDb->addWord($word);
+        // 审核通过 1 、 不通过 -1
+        if ($result > 0 && $isVerify == 1) {
+            //审核通过
+            $word = $wordDb->getWordVerifyById($wordVerifyId);
+            $wordId = $wordDb->addWord($word);
 
-                if ($wordId > 0) {
-                    //投递异步任务
-                    $word->id = $wordId;
-                    $word->isDelete = 0;
-                    $word->createTime = Util::getStandardCurrentTime();
-                    $word->updateTime = $word->createTime;
-                    AsyncTask::addWordSearchTask($word);
-                }
-
-                $data['updateRow'] = $result;
-                $data['wordId'] = $wordId;
-                Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+            // 截取内容
+            $content = $word->content;
+            $len = mb_strlen($content);
+            if ($len > 250) {
+                $subContent = mb_substr($content, 0, 250);
             } else {
-                $data['updateRow'] = $result;
-                Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+                $subContent = $content;
             }
+
+            if ($wordId > 0) {
+                //投递异步任务
+                $word->id = $wordId;
+                $word->subContent = $subContent;
+                $word->isDelete = 0;
+                $word->createTime = Util::getStandardCurrentTime();
+                $word->updateTime = $word->createTime;
+                AsyncTask::addWordSearchTask($word);
+            }
+
+            $data['updateRow'] = $result;
+            $data['wordId'] = $wordId;
         } else {
-            if ($wordVerifyId == null || $isVerify == null) {
-                $this->assign('error', '缺少参数');
-                return;
-            }
+            $data['updateRow'] = $result;
+        }
 
-            if (!$wordDb->wordVerifyIdIsExist($wordVerifyId)) {
-                $this->assign('isExist', '待审核的词条不存在');
-                return;
-            }
-
-            $result = $wordDb->wordIsVerified($isVerify, $wordVerifyId);
-
-            if ($isVerify == 1 && $result > 0) {
-                $word = $wordDb->getWordVerifyById($wordVerifyId);
-                $wordId = $wordDb->addWord($word);
-
-                if ($wordId > 0) {
-                    //投递异步任务
-                    $word->id = $wordId;
-                    $word->isDelete = 0;
-                    $word->createTime = Util::getStandardCurrentTime();
-                    $word->updateTime = $word->createTime;
-                    AsyncTask::addWordSearchTask($word);
-                }
-
-                $data['updateRow'] = $result;
-                $data['wordId'] = $wordId;
-                $this->assign('data', $data);
-            } else {
-                $this->assign('updateRow', $result);
-            }
+        if ($api !== null) {
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+        } else {
+            $this->assign('data', $data);
         }
     }
 
     function onRequest($actionName)
     {
         // TODO: Implement onRequest() method.
-
-
+        parent::onRequest($actionName);
     }
 
     function actionNotFound($actionName = null, $arguments = null)

@@ -15,4 +15,5 @@ class Word {
     public $isDelete;
     public $createTime;
     public $updateTime;
+    public $subContent;
 }
