@@ -30,6 +30,7 @@ abstract class ViewController extends AbstractController
         $this->view->setCacheDir("{$tempPath}/cache/");              # 模板缓存目录
         $this->view->setTemplateDir('App/Views/');    # 模板文件目录
         $this->view->setCaching(false);
+        $this->view->setConfigDir('App/Views/Include/config');
     }
 
     /**

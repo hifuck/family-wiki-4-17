@@ -1,21 +1,40 @@
 {include '../Include/header.html'}
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="/App/Views/Assets/editor_md/editormd.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("editormd", {
+            path : "/App/Views/Assets/editor_md/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
+        });
+
+        $("#editormd").css("height",window.innerHeight-150)
+    });
+</script>
 <div class="main-wrapper">
     <div class="layout">
         {if ! isset($wordId)}
-            <div class="panel">
+            <div class="edit-panel">
+                {if isset($error)}
+                    <div class="alert alert-danger" role="alert">{$error},请检查后重新提交</div>
+                {/if}
                 <form action="/WordCtl/add" method="POST">
                     <label>词条名</label>
-                    <input type="text" name="word"><br>
-                    <textarea type="text" name="content" cols="100" rows="16"></textarea>
+                    <input type="text" name="word">
+                    <input type="submit" name="submit" value="提交">
+                    <br>
+                    <link rel="stylesheet" href="/App/Views/Assets/editor_md/css/editormd.min.css" />
+                    <div id="editormd">
+                        <textarea type="text" name="content" style="display:none;">开始撰写</textarea>
+                    </div>
                     <input type="hidden" name="type" value="1">
                     <input type="hidden" name="template" value="1">
-                    <input type="submit" name="submit" value="提交">
+
                 </form>
 
             </div>
+            <div style="margin-top:80px;"></div>
         {else}
             添加成功{$word->word}
         {/if}
     </div>
 </div>
-{include '../Include/footer.html'}

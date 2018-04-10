@@ -75,14 +75,14 @@ class WordCtl extends ViewController
         $api = $params['api'] ?? null;
 
         $word = new Word();
-        $word->word = trim($params['word'] ?? null);
-        $word->content = $params['content'] ?? null;
-        $word->type = Check::checkInteger($params['type'] ?? null);
-        $word->template = Check::checkInteger($params['template'] ?? null);
+        $word->word = trim($params['word'] ?? '');
+        $word->content = trim($params['content'] ?? '');
+        $word->type = Check::checkInteger($params['type'] ?? '');
+        $word->template = Check::checkInteger($params['template'] ?? '');
         $word->version = 1;
 
         // 检查参数是否齐全
-        if (in_array(null, array($word->word, $word->content), true)) {
+        if (in_array('', array($word->word, $word->content), true)) {
             Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/add.html',$api);
             return;
         }
