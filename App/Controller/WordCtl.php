@@ -64,9 +64,6 @@ class WordCtl extends ViewController
 
     function viewAdd() {
         if (!$this->checkLogin() ) {
-            $ssoUrl = Constant::SSO_SYSTEM_URL;
-            $systemUrl = Constant::SYSTEM_URL;
-            $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
             return;
         } else {
             // 渲染页面直接输出

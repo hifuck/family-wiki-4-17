@@ -8,7 +8,7 @@ use Core\AbstractInterface\AbstractController;
 use Core\Http\Request;
 use Core\Http\Response;
 use App\Utils\Util;
-
+use Conf\Constant;
 /**
  * 视图控制器
  * Class ViewController
@@ -97,6 +97,10 @@ abstract class ViewController extends AbstractController
             $userDB = Util::buildInstance('App\DB\UserDB');
             return $userDB->validateUser($userId,$token,$username);
         }
+
+        $ssoUrl = Constant::SSO_SYSTEM_URL;
+        $systemUrl = Constant::SYSTEM_URL;
+        $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
         return false;
     }
 }
