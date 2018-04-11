@@ -25,13 +25,39 @@ class UserCtl extends ViewController{
     function profile() {
         $this->assign('profile_active','active');
         $this->assign('word_active','');
+        $this->assign('user',$this->user);
         $this->fetch('UserCtl/index.html');
     }
 
     function myWord() {
-        $this->assign('profile_active','');
-        $this->assign('word_active','active');
-        $this->fetch('UserCtl/myword.html');
+        if (!$this->checkLogin() ) {
+            return;
+        }
+
+        $params = $this->request()->getRequestParam();
+
+        $api = $params['api'] ?? null;
+        $pageIndex = $params['p'] ?? 1;
+        $pageSize = $params['s'] ?? 10;
+        $userId = $this->user['userId'];
+
+        $wordDB = Util::buildInstance('App\DB\WordDB');
+        $paging = $wordDB->getUserWordsPaging($pageIndex, $pageSize, $userId);
+        $total = $wordDB->getUserWordsCount($userId);
+
+        $data['pageIndex'] = $pageIndex;
+        $data['pageSize'] = $pageSize;
+        $data['content'] = $paging;
+        $data['total'] = $total;
+
+        if ($api == null) {
+            $this->assign('profile_active','');
+            $this->assign('word_active','active');
+            $this->assignMap($data);
+            $this->fetch("UserCtl/myword.html");
+        } else {
+            Util::printResult($this->response,ErrorCode::ERROR_SUCCESS,$data);
+        }
     }
 
     function login() {

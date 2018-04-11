@@ -209,4 +209,26 @@ class WordDB extends AbstractDB
           )";
         return $this->insert($sql);
     }
+
+    /**
+     * 分页获取用户词条
+     */
+    public function getUserWordsPaging($pageIndex, $pageSize, $userId) {
+        $offset = ($pageIndex - 1) * $pageSize;
+
+        $sql = "SELECT id,word,content,type,template,version,author,authorName,isVerify,createTime,updateTime FROM
+                 $this->TABLE_VERIFY WHERE author = '$userId' AND isDelete = 0 ORDER BY id DESC limit $offset,$pageSize ";
+        
+        return $this->query($sql);
+    }
+
+    /**
+     * 获取用户词条总数
+     */
+    public function getUserWordsCount($userId) {
+        $sql = "SELECT count(id) FROM $this->TABLE_VERIFY WHERE author = '$userId' AND isDelete = 0 ";
+        $result = $this->uniqueResult($sql);
+
+        return $result['count(id)'];
+    }
 }

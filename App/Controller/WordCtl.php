@@ -65,11 +65,12 @@ class WordCtl extends ViewController
     function viewAdd() {
         if (!$this->checkLogin() ) {
             return;
-        } else {
-            // 渲染页面直接输出
-            $this->assign('user',"xinhuo");
-            $this->fetch('Word/add.html');
         }
+
+        // 渲染页面直接输出
+        $this->assign('user',"xinhuo");
+        $this->fetch('Word/add.html');
+        
     }
 
     /**
@@ -132,7 +133,7 @@ class WordCtl extends ViewController
     function delete() {
 
     }
-
+    
     /**
      * 搜索词条
      */

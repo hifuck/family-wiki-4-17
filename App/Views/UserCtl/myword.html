@@ -3,7 +3,10 @@
     <div class="layout">
         {include '../Include/left_side_menu.html'}
         <div class="right-side-content">
-            这里显示我的词条
+            共有{$total}条数据
+            {foreach $content as $word} 
+                {$word['word']}
+            {/foreach}
         </div>
     </div>
 </div>
