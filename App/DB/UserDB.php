@@ -14,6 +14,10 @@ class UserDB extends AbstractDB{
 
     /**
      * 根据id_token验证用户身份
+     * @param $userId 用户id
+     * @param $token  令牌
+     * @param $username 用户名
+     * @return bool true代表有效，false代表无效
      */
     public function validateUser($userId,$token,$username){
         $sql = "SELECT id FROM $this->TABLE WHERE 
@@ -26,6 +30,17 @@ class UserDB extends AbstractDB{
         } else {
             return false;
         }
+    }
+
+    /**
+     * 从数据库中删除token
+     * @param $userId 用户id
+     * @param $token  令牌
+     * @return int 更新的记录数
+     */
+    public function deleteToken($userId, $token) {
+        $sql = "UPDATE $this->TABLE SET isDelete = '1' WHERE userId = '$userId' AND token = '$token' ";
+        return $this->update($sql);
     }
 
     public function addUserToken(User $user) {

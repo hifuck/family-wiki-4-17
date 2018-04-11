@@ -39,7 +39,12 @@ class UserCtl extends ViewController{
     }
 
     function logout() {
-        $this->response()->setCookie('user',"",time() - 1,'/');
+        if ($this->user != null) {
+            $userDB = Util::buildInstance('App\DB\UserDB');
+            $userDB->deleteToken($this->user['userId'],$this->user['token']);
+            $this->response()->setCookie('user',"",time() - 1,'/');
+        }
+        // 从数据库中使token无效
         $this->fetch('UserCtl/logout.html');
     }
 
