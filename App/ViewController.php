@@ -101,6 +101,7 @@ abstract class ViewController extends AbstractController
         $ssoUrl = Constant::SSO_SYSTEM_URL;
         $systemUrl = Constant::SYSTEM_URL;
         $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
+        $this->response()->end();
         return false;
     }
 }

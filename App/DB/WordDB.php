@@ -34,7 +34,14 @@ class WordDB extends AbstractDB
      */
     public function editWordVerify(Word $word)
     {
+        $sql = "UPDATE $this->TABLE_VERIFY SET 
+        word = ?,content=?,type=?,template=?,
+        version=version+1,author=?,authorName=?,
+        updateTime=now() WHERE id = ? and isDelete = 0";
 
+        $params = array($word->word, $word->content, $word->type, $word->template, $word->author, $word->authorName, $word->id);
+
+        return $this->update($sql, $params);
     }
 
     /**
@@ -56,19 +63,24 @@ class WordDB extends AbstractDB
         FROM $this->TABLE_VERIFY WHERE id = '$wordId' ";
 
         $result = $this->uniqueResult($sql);
-        $word = new Word();
-        $word->id = $result['id'];
-        $word->word = $result['word'];
-        $word->content = $result['content'];
-        $word->type = $result['type'];
-        $word->template = $result['template'];
-        $word->version = $result['version'];
-        $word->isDelete = $result['isDelete'];
-        $word->createTime = $result['createTime'];
-        $word->updateTime = $result['updateTime'];
-        $word->author = $result['author'];
-        $word->authorName = $result['authorName'];
-        return $word;
+
+        if ($result != null) {
+            $word = new Word();
+            $word->id = $result['id'];
+            $word->word = $result['word'];
+            $word->content = $result['content'];
+            $word->type = $result['type'];
+            $word->template = $result['template'];
+            $word->version = $result['version'];
+            $word->isDelete = $result['isDelete'];
+            $word->createTime = $result['createTime'];
+            $word->updateTime = $result['updateTime'];
+            $word->author = $result['author'];
+            $word->authorName = $result['authorName'];
+            return $word;
+        } else {
+            return null;
+        }
 
     }
 

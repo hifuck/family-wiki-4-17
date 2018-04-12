@@ -32,7 +32,11 @@ abstract class AbstractES{
         $url = $this->server.'/'.$esRequest->index.'/'.$esRequest->type.'/_search';
         $result = $this->httpClient->get($url,$esRequest->searchStr);
         $this->retrieve();
-        return new ESResponse($result);
+        if ($result != false) {
+            return new ESResponse($result);
+        } else {
+            return null;
+        }
     }
 
     /**

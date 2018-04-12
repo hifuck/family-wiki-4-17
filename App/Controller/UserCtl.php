@@ -53,6 +53,8 @@ class UserCtl extends ViewController{
         if ($api == null) {
             $this->assign('profile_active','');
             $this->assign('word_active','active');
+            $this->assign('next',ceil($total/$pageSize)>$pageIndex);
+            $this->assign('pre',$pageIndex>1);
             $this->assignMap($data);
             $this->fetch("UserCtl/myword.html");
         } else {

@@ -3,10 +3,41 @@
     <div class="layout">
         {include '../Include/left_side_menu.html'}
         <div class="right-side-content">
-            共有{$total}条数据
-            {foreach $content as $word} 
-                {$word['word']}
-            {/foreach}
+            <table class="table">
+                <tr><th>ID</th><th>词条</th><th>状态</th><th>操作</th></tr>
+                {foreach $content as $word} 
+                    <tr>
+                        <td>{$word['id']}</td>
+                        <td>{$word['word']}</td>
+                        <td>
+                            {if $word['isVerify'] eq 1}
+                                <span style="color:blue">审核通过</span>
+                            {/if}
+                            {if $word['isVerify'] eq -1}
+                            <span style="color:red">审核未通过</span>
+                            {/if}
+                            {if $word['isVerify'] eq 0}
+                                待审核
+                            {/if}
+                        </td>
+                        <td>
+                            {if $word['isVerify'] eq 0}
+                                <a class="btn btn-primary" href="/WordCtl/viewEdit?wordId={$word['id']}">重新编辑</a>
+                            {/if}
+                            
+                            <a class="btn btn-danger"  href="">删除</a>
+                        </td>
+                    </tr>
+                {/foreach}
+            </table>
+            
+            共有{$total}条数据 
+            {if $pre}
+                <a href="/UserCtl/myWord?p={$pageIndex-1}&s={$pageSize}">上一页</a>
+            {/if}
+            {if $next}
+                <a href="/UserCtl/myWord?p={$pageIndex+1}&s={$pageSize}">下一页</a>
+            {/if}
         </div>
     </div>
 </div>
