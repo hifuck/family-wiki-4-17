@@ -35,11 +35,10 @@ class WordCtl extends ViewController
     function word() {
         $params = $this->request()->getRequestParam();
 
-        $api = $params['api'] ?? null;
         $word = $params['word'] ?? null;
 
         if ($word == null) {
-            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'参数缺失','Word/word.html',$api);
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'参数缺失','Word/word.html',$this->api);
             return;
         }
 
@@ -47,11 +46,11 @@ class WordCtl extends ViewController
         $word = $wordDB->getWord($word);
 
         if ($word == null) {
-            Util::printError($this,ErrorCode::ERROR_SQL_QUERY,'该词条不存在','Word/word.html',$api);
+            Util::printError($this,ErrorCode::ERROR_SQL_QUERY,'该词条不存在','Word/word.html',$this->api);
             return;
         }
 
-         if ($api == null) {
+         if ($this->api == null) {
             $this->assignMap($word);
             $this->fetch('Word/word.html');
             return;
@@ -91,8 +90,6 @@ class WordCtl extends ViewController
 
         $params = $this->request()->getRequestParam();
 
-        $api = $params['api'] ?? null;
-
         try{
             $word = new Word();
             $word->word = trim($params['word'] ?? '');
@@ -103,12 +100,12 @@ class WordCtl extends ViewController
             $word->authorName = $this->user['username'];
             $word->version = 1;
         }catch (CheckException $e){
-            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/add.html',$api);
+            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/add.html',$this->api);
             return;
         }
         // 检查参数是否齐全
         if (in_array('', array($word->word, $word->content), true)) {
-            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/add.html',$api);
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/add.html',$this->api);
             return;
         }
 
@@ -117,7 +114,7 @@ class WordCtl extends ViewController
 
         $data['wordId'] = $wordId;
 
-        if ($api !== null) {
+        if ($this->api !== null) {
             // 返回接口数据
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
@@ -129,12 +126,10 @@ class WordCtl extends ViewController
 
     /**
      * 编辑词条
-     * //TODO 编辑词条的权限判断
+     * 
      */
     function edit() {
         $params = $this->request()->getRequestParam();
-
-        $api = $params['api'] ?? null;
 
         try{
             $word = new Word();
@@ -147,21 +142,28 @@ class WordCtl extends ViewController
             $word->authorName = $this->user['username'];
             $word->version = 1;
         }catch (CheckException $e){
-            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/edit.html',$api);
+            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/edit.html',$this->api);
             return;
         }
         // 检查参数是否齐全
         if (in_array('', array($word->word, $word->content), true)) {
-            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/edit.html',$api);
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/edit.html',$this->api);
             return;
         }
 
         $wordDB = Util::buildInstance('\App\DB\WordDB');
+
+        // 检查编辑权限
+        if (!$wordDB->hasUpdatePermission($this->user['userId'],$word->id)) {
+            Util::printError($this,ErrorCode::ERROR_PERMISSION,'无编辑权限','Word/edit.html',$this->api);
+            return;
+        }
+
         $update = $wordDB->editWordVerify($word);
 
         $data['update'] = $update;
 
-        if ($api !== null) {
+        if ($this->api !== null) {
             // 返回接口数据
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
@@ -173,10 +175,37 @@ class WordCtl extends ViewController
 
     /**
      * 删除词条
-     * //TODO 编辑词条的权限判断
+     * 
      */
     function delete() {
+        $params = $this->request()->getRequestParam();
 
+        try{
+            $wordId = Check::checkInteger($params['wordId'] ?? '');
+        }catch (CheckException $e){
+            Util::printError($this,$e->getCode(),$e->getMessage(),'Word/edit.html',$this->api);
+            return;
+        }
+
+        $wordDB = Util::buildInstance('\App\DB\WordDB');
+
+        // 检查删除权限
+        if (!$wordDB->hasUpdatePermission($this->user['userId'],$wordId)) {
+            Util::printError($this,ErrorCode::ERROR_PERMISSION,'无删除权限','Word/delete.html',$this->api);
+            return;
+        }
+
+        $update = $wordDB->deleteWordVerify($wordId);
+
+        $data['delete'] = $update;
+
+        if ($this->api !== null) {
+            // 返回接口数据
+            Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
+        } else {
+            $this->assignMap($data);
+            $this->fetch('Word/delete.html');
+        }
     }
 
     /**
@@ -184,12 +213,10 @@ class WordCtl extends ViewController
      */
     function search() {
         $params = $this->request()->getRequestParam();
-
-        $api = $params['api'] ?? null;
         $word = $params['word'] ?? null;
 
         if ($word == null) {
-            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/search.html',$api);
+            Util::printError($this,ErrorCode::ERROR_PARAM_MISSING,'缺少参数','Word/search.html',$this->api);
             return;
         }
 
@@ -203,13 +230,13 @@ class WordCtl extends ViewController
 
         if ($result == null) {
             //搜索服务器出现问题
-            Util::printError($this,ErrorCode::ERROR_SQL_QUERY,'搜索服务器出现故障','Word/search.html',$api);
+            Util::printError($this,ErrorCode::ERROR_SQL_QUERY,'搜索服务器出现故障','Word/search.html',$this->api);
             return;
         }
 
         $hits = $result->hits;          //获取命中的条目
 
-        if ($api != null) {
+        if ($this->api != null) {
             $data['hits'] = $hits;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
             return;

@@ -30,6 +30,20 @@ class WordDB extends AbstractDB
     }
 
     /**
+     * 检查用户是否有修改权限（编辑和删除）
+     * @param $userId 用户id
+     * @param $wordId 词条id
+     */
+    public function hasUpdatePermission($userId, $wordId) {
+        $word = $this->getWordVerifyById($wordId);
+        if ($word != null && $word->author == $userId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 编辑需审核的词条
      */
     public function editWordVerify(Word $word)
@@ -46,10 +60,13 @@ class WordDB extends AbstractDB
 
     /**
      * 删除需审核的词条
+     * @param $wordId
+     * @return int 删除的记录数
      */
     public function deleteWordVerify(int $wordId)
     {
-
+        $sql = "UPDATE $this->TABLE_VERIFY SET isDelete = 1 WHERE id = '$wordId' ";
+        return $this->update($sql);
     }
 
     /**

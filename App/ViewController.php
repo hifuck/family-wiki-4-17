@@ -9,6 +9,7 @@ use Core\Http\Request;
 use Core\Http\Response;
 use App\Utils\Util;
 use Conf\Constant;
+use Conf\ErrorCode;
 /**
  * 视图控制器
  * Class ViewController
@@ -19,6 +20,7 @@ abstract class ViewController extends AbstractController
 {
     protected $view;
     protected $user = null;
+    protected $api = null;
 
     /**
      * 初始化模板引擎
@@ -77,7 +79,9 @@ abstract class ViewController extends AbstractController
 
     function onRequest($actionName) {
         $cookie = $this->request()->getSwooleRequest()->cookie;
-        
+        $params = $this->request()->getRequestParam();
+        $this->api = $params['api'] ?? null;
+
         if(isset($cookie['user'])) {
             $user = json_decode($cookie['user'],true);
             $this->assign('nickname',$user['nickname']);
@@ -91,17 +95,43 @@ abstract class ViewController extends AbstractController
     function checkLogin() {
         if ($this->user != null) {
             $userId = $this->user['userId'];
-            $username = $this->user['username'];
             $token = $this->user['token'];
-            // 验证该用户的userId和token和username是否对应
+            // 验证该用户的userId和token是否对应
             $userDB = Util::buildInstance('App\DB\UserDB');
-            return $userDB->validateUser($userId,$token,$username);
+            $this->user = $userDB->validateUser($userId,$token);
+        } else {
+            // 检查token是否通过post传过来
+            $params = $this->request()->getRequestParam();
+            $idToken = $params['id_token'] ?? null;
+            if ($idToken != null) {
+                $arr = explode('|',$idToken);
+                if (count($arr) == 3) {
+                    $userId = $arr[0];
+                    $token = $arr[1];
+                    // 验证该用户的userId和token是否对应
+                    $userDB = Util::buildInstance('App\DB\UserDB');
+                    $this->user = $userDB->validateUser($userId,$token);
+                }
+            }
         }
 
-        $ssoUrl = Constant::SSO_SYSTEM_URL;
-        $systemUrl = Constant::SYSTEM_URL;
-        $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
-        $this->response()->end();
-        return false;
+        if ($this->user == null) {
+
+            if ($this->api) {
+                Util::printResult($this->response(),ErrorCode::ERROR_LOGIN,"当前未登录");
+                $this->response()->end();
+                return false;
+            } else {
+                $ssoUrl = Constant::SSO_SYSTEM_URL;
+                $systemUrl = Constant::SYSTEM_URL;
+                $this->response()->redirect("http://$ssoUrl/#/login/subSystem/$systemUrl%2fUserCtl%2fcheckToken");
+                $this->response()->end();
+                return false;
+            }
+        } else {
+            $this->assign('nickname',$this->user['nickname']);
+            $this->assign('photo',$this->user['photo']);
+            return true;
+        }
     }
 }

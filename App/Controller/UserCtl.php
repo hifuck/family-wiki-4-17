@@ -30,16 +30,14 @@ class UserCtl extends ViewController{
     }
 
     function myWord() {
-        if (!$this->checkLogin() ) {
-            return;
-        }
-
         $params = $this->request()->getRequestParam();
 
-        $api = $params['api'] ?? null;
         $pageIndex = $params['p'] ?? 1;
         $pageSize = $params['s'] ?? 10;
         $userId = $this->user['userId'];
+
+        $pageIndex = $pageIndex < 1 ? 1 : $pageIndex;
+        $pageSize = $pageSize < 5 ? 5 : $pageSize;
 
         $wordDB = Util::buildInstance('App\DB\WordDB');
         $paging = $wordDB->getUserWordsPaging($pageIndex, $pageSize, $userId);
@@ -50,7 +48,7 @@ class UserCtl extends ViewController{
         $data['content'] = $paging;
         $data['total'] = $total;
 
-        if ($api == null) {
+        if ($this->api == null) {
             $this->assign('profile_active','');
             $this->assign('word_active','active');
             $this->assign('next',ceil($total/$pageSize)>$pageIndex);
@@ -108,6 +106,11 @@ class UserCtl extends ViewController{
     function onRequest($actionName)
     {
         parent::onRequest($actionName);
+        $checkAction = array('myWord','profile');
+
+        if (in_array($actionName,$checkAction)) {
+            $this->checkLogin();
+        }
     }
 
     function actionNotFound($actionName = null, $arguments = null)

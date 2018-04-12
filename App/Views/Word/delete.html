@@ -1,0 +1,26 @@
+{include '../Include/header.html'}
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="/App/Views/Assets/editor_md/editormd.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("editormd", {
+            path : "/App/Views/Assets/editor_md/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
+        });
+
+        $("#editormd").css("height",window.innerHeight-150)
+    });
+</script>
+<div class="main-wrapper">
+    <div class="layout">
+        {if isset($delete)}
+            {if $delete>0 }
+                <div class="alert alert-success" role="alert">删除成功，即将跳转到详情</div>
+            {else}
+                <div class="alert alert-warning" role="alert">记录无任何变化，即将跳转到详情</div>
+            {/if}
+        {elseif isset($error)}
+            <div class="alert alert-danger" role="alert">{$error},请检查后重新提交</div>
+            
+        {/if}
+    </div>
+</div>

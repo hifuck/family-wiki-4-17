@@ -16,17 +16,15 @@ class UserDB extends AbstractDB{
      * 根据id_token验证用户身份
      * @param $userId 用户id
      * @param $token  令牌
-     * @param $username 用户名
      * @return bool true代表有效，false代表无效
      */
-    public function validateUser($userId,$token,$username){
-        $sql = "SELECT id FROM $this->TABLE WHERE 
-        userId = '$userId' AND token = '$token' 
-        AND username = '$username' AND isDelete = '0' limit 0,1";
-        $result = $this->query($sql);
+    public function validateUser($userId,$token){
+        $sql = "SELECT id,userId,token,username,nickname,photo,gender FROM $this->TABLE WHERE 
+        userId = '$userId' AND token = '$token' AND isDelete = '0' limit 0,1";
+        $result = $this->uniqueResult($sql);
 
-        if (count($result) > 0) {
-            return true;
+        if ($result != null) {
+            return $result;
         } else {
             return false;
         }
