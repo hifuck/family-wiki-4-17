@@ -1,10 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>词条分类</title>
-</head>
-<body>
-<a href="">添加词条分类</a>
-</body>
-</html>
+{include "Admin/Include/header.html"}
+<!--nav-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="#">主页 </a></li>
+                <li class="active">
+                    <a href="/Admin/WordType/index">词条分类<span class="sr-only">(current)</span></a>
+                </li>
+                <li>
+                    <a href="/Admin/WordTemplate/index">模板分类</a>
+                </li>
+                <li><a href="/Admin/Word/index">词条审核</a></li>
+            </ul>
+        </div>
+        <!--nav-->
+
+        <!--pageContent-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <h1 class="sub-header">词条分类列表</h1>
+            <h3 class="sub-header"><a href="/Admin/WordType/viewAdd" class="btn btn-default btn-success">添加词条分类</a></h3>
+            <!--tree-->
+
+
+
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>分类</th>
+                        <th>父级Id</th>
+                        <th>第几级</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {foreach $data['content'] as $v}
+                    <tr>
+                        <td>{$v['id']}</td>
+                        <td>{$v['typeId']}</td>
+                        <td> {$v['name']}</td>
+                        <td>{$v['content']}</td>
+                        <td>{$v['createTime']}</td>
+                        <td>{$v['updateTime']}</td>
+                        <td>
+                            <a href="viewEdit?id={$v['id']}" class="btn btn-default">编辑</a>
+                            <button type="button" value="{$v['id']}" id="del" class="btn btn-default" onclick="del()">删除</button>
+                        </td>
+                    </tr>
+                    {/foreach}
+
+                    </tbody>
+                </table>
+                <!--分页-->
+                <nav aria-label="Page navigation" style="text-align: center">
+                    <ul class="pagination">
+                        <li class="{$pre}">
+                            {if $pre eq 'disabled'}
+                            <span aria-hidden="true">&laquo;</span>
+                            {else}
+                            <a href="/Admin/WordTemplate/index?pageIndex={$data['pageIndex']-1}&&pageSize={$data['pageSize']}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                            {/if}
+                        </li>
+                        {for $var=$data['pageIndex'] to $data['total']}
+                        <li><a href="/Admin/WordTemplate/index?pageIndex={$var}&&pageSize={$data['pageSize']}">{$var}</a></li>
+                        {/for}
+                        <li>
+                            <a href="/Admin/WordTemplate/index?pageIndex={$data['pageIndex']+1}&&pageSize={$data['pageSize']}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li><span>总共{$data['total']}页</span></li>
+                        <li><span>显示<select name="pageSize" id="pageSize" onclick="my()">
+                            <option value="{$data['pageSize']}">{$data['pageSize']}</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>条</span></li>
+                    </ul>
+                </nav>
+                <!--分页-->
+            </div>
+            <!--/tree-->
+
+        </div>
+        <!--pageContent-->
+    </div>
+</div>
+
+{include "Admin/Include/foot.html"}
+
+
+

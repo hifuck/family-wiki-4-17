@@ -22,6 +22,8 @@ class WordType extends ViewController
     function index()
     {
         // TODO: Implement index() method.
+//        $this->getTopWordTypePaging();
+//        $this->getChildWordTypeListById();
         $this->fetch('Admin/WordType/index.html');
     }
 
@@ -160,10 +162,13 @@ class WordType extends ViewController
 
         $result = $wordTypeDb->getWordTypePaging($pageIndex, $pageSize);
 
+        $count = $wordTypeDb->countWordType();
+        $total = ceil($count/$pageSize);
+
         $data['pageIndex'] = $pageIndex;
         $data['pageSize'] = $pageSize;
         $data['content'] = $result;
-        $data['total'] = $wordTypeDb->countWordType();
+        $data['total'] = $total;
 
         if ($api !== null) {
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);

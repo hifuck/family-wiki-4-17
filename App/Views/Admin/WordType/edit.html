@@ -1,14 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>词条的分类编辑</title>
-</head>
-<body>
-{if $error == true}
-<p>{$error}</p>
-{else}
-<p>{$updateRow}</p>
-{/if}
-</body>
-</html>
+{include "Admin/Include/header.html"}
+<!--nav-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="#">主页 </a></li>
+                <li><a href="/Admin/WordType/index">词条分类</a></li>
+                <li class="active">
+                    <a href="/Admin/WordTemplate/index">模板分类<span class="sr-only">(current)</span></a>
+                </li>
+                <li><a href="/Admin/Word/index">词条审核</a></li>
+            </ul>
+        </div>
+        <!--nav-->
+
+        <!--pageContent-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <h1 class="sub-header">模板编辑</h1>
+            <div class="table-responsive">
+               <!--//表单-->
+                <form name="form1" id="form1">
+                    <div class="form-group">
+                        <label for="typeId">TypeId</label>
+                        <input type="text" class="form-control" name="typeId" value="{$data['typeId']}" id="typeId" placeholder="词条分类Id">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">名字</label>
+                        <input type="text" class="form-control" name="name" value="{$data['name']}" id="name" placeholder="名字">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">内容</label>
+                        <textarea name="content" id="content"
+                                  cols="30" rows="10" class="form-control">{$data['content']}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="templateId" value="{$data['id']}">
+                    </div>
+
+                    <button type="button" class="btn btn-default" onclick="update()">更新</button>
+                </form>
+                <!--form-->
+            </div>
+        </div>
+        <!--pageContent-->
+    </div>
+</div>
+
+{include "Admin/Include/foot.html"}
+
+<script type="text/javascript">
+    function update() {
+
+        var typeId = form1.typeId.value
+        var name = form1.name.value
+        var content = form1.content.value
+        var templateId = form1.templateId.value
+
+        $.ajax({
+            type: "POST",   //提交的方法
+            url:"/Admin/WordTemplate/edit", //提交的地址
+            data:{
+                'typeId' : typeId,
+                'name'   : name,
+                'content': content,
+                'templateId': templateId,
+                "api":  1
+            },
+            async: false,
+            error: function(request) {  //失败的话
+                alert("Connection error");
+            },
+            success: function(data) {  //成功
+                console.log(data);
+                var dataJson = JSON.parse(data);
+                if (dataJson.data.updateRow) {
+                    alert("更新了一个记录");
+                    window.location.href = "/Admin/WordTemplate/index"
+                } else {
+                    alert("没有更新")
+                }
+            }
+        });
+    }
+</script>

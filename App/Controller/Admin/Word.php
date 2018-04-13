@@ -23,6 +23,8 @@ class Word extends ViewController
     function index()
     {
         // TODO: Implement index() method.
+        $this->getWordVerifyReviewPaging();
+        $this->fetch('Admin/Word/index.html');
     }
 
     /**
@@ -42,16 +44,28 @@ class Word extends ViewController
         }
 
         $wordDb = new WordDB();
+
+        $SpageSize = $params['SpageSize'] ?? '';
+
+        if ($SpageSize !== ''){
+            $pageSize = $params['SpageSize'];
+        }
+
         $result = $wordDb->getWordVerifyReviewPaging($pageIndex, $pageSize);
+        $count = $wordDb->countWordVerifyReview();
+        $total = ceil($count/$pageSize);
+        $data['pageIndex'] = $pageIndex;
+        $data['pageSize'] = $pageSize;
+        $data['content'] = $result;
+        $data['total'] = $total;
 
         if ($api !== null) {
-            $data['pageIndex'] = $pageIndex;
-            $data['pageSize'] = $pageSize;
-            $data['content'] = $result;
-            $data['total'] = $wordDb->countWordVerifyReview();
+
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
-            $this->assign('data', $result);
+            $this->assign('next',ceil($total/$pageSize)>$pageIndex ? '' : 'disabled');
+            $this->assign('pre',$pageIndex>1 ? '' : 'disabled');
+            $this->assign('data', $data);
         }
     }
 

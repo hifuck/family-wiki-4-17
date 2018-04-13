@@ -1,21 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>后台管理</title>
-</head>
-<body>
+{include "Admin/Include/header.html"}
+<!--nav-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">主页 <span class="sr-only">(current)</span></a></li>
+                <li><a href="/Admin/WordType/index">词条分类</a></li>
+                <li><a href="/Admin/WordTemplate/index">模板分类</a></li>
+                <li><a href="/Admin/Word/index">词条审核</a></li>
+            </ul>
+        </div>
+        <!--nav-->
 
-<div>
-    <ul>
-        <li>
-            <a href="Admin/WordType/index">词条分类管理</a>
-        </li>
-        <li>
-            <a href="Admin/WordTemplate/index">分类模板管理</a>
-        </li>
-    </ul>
+        <!--pageContent-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <h1 class="sub-header">主页</h1>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1,011</td>
+                        <td>eget</td>
+                        <td>nulla</td>
+                        <td>Class</td>
+                        <td>aptent</td>
+                    </tr>
+                    <tr>
+                        <td>1,012</td>
+                        <td>taciti</td>
+                        <td>sociosqu</td>
+                        <td>ad</td>
+                        <td>litora</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--pageContent-->
+    </div>
 </div>
 
-</body>
-</html>
+{include "Admin/Include/foot.html"}

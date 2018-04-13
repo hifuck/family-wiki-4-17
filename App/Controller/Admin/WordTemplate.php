@@ -75,7 +75,6 @@ class WordTemplate extends ViewController
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
             $this->assign('row', $result);
-            $this->fetch('Admin/WordTemplate/add.html');
         }
     }
 
@@ -112,7 +111,7 @@ class WordTemplate extends ViewController
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
             $this->assign('updateRow', $result);
-            $this->fetch('Admin/WordTemplate/edit.html');
+            //$this->fetch('Admin/WordTemplate/edit.html');
         }
     }
 
@@ -145,7 +144,6 @@ class WordTemplate extends ViewController
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
             $this->assign('delRow', $result);
-            $this->fetch('Admin/WordTemplate/del.html');
         }
     }
 
@@ -166,18 +164,29 @@ class WordTemplate extends ViewController
         }
 
         $wordTemplateDb = new WordTemplateDB();
+
+        $SpageSize = $params['SpageSize'] ?? '';
+
+        if ($SpageSize !== ''){
+            $pageSize = $params['SpageSize'];
+        }
+
         $result = $wordTemplateDb->getWordTemplatePaging($pageIndex, $pageSize);
+
+        $count =$wordTemplateDb->countWordTemplate();
+        $total = ceil($count/$pageSize);
 
         $data['pageIndex'] = $pageIndex;
         $data['pageSize'] = $pageSize;
         $data['content'] = $result;
-        $data['total'] = $wordTemplateDb->countWordTemplate();
+        $data['total'] = $total;
 
         if ($api !== null) {
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
+            $this->assign('next',ceil($total/$pageSize)>$pageIndex ? '' : 'disabled');
+            $this->assign('pre',$pageIndex>1 ? '' : 'disabled');
             $this->assign('data', $data);
-            $this->fetch('Admin/WordTemplate/index.html');
         }
     }
 
