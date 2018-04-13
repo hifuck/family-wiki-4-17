@@ -127,11 +127,10 @@
             },
             success:function (data) {
 
-                console.log(data);
                 var dataJson = JSON.parse(data);
                 if (dataJson.data.updateRow){
-                    alert('审核未通过成功')
-                    window.location.href = ''
+                    alert('审核未通过成功');
+                    window.location.href = '/Admin/Word/index'
                 }else{
                     alert('审核未通过失败')
                 }
@@ -158,11 +157,10 @@
             },
             success:function (data) {
 
-                console.log(data);
                 var dataJson = JSON.parse(data);
                 if (dataJson.data.updateRow){
-                    alert('审核通过成功')
-                    window.location.href = ''
+                    alert('审核通过成功');
+                    window.location.href = '/Admin/Word/index'
                 }else{
                     alert('审核通过失败')
                 }
