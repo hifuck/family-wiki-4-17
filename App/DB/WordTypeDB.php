@@ -65,6 +65,27 @@ class WordTypeDB extends AbstractDB
     }
 
 
+    public function checkIsParent(int $typeId)
+    {
+        $sql = "SELECT count('id') FROM $this->TABLE_TYPE WHERE parentId = ? ";
+        $params = [$typeId];
+        $result = $this->uniqueResult($sql, $params);
+        if ($result["count('id')"] > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function del(int $typeId)
+    {
+        $sql = "DELETE FROM $this->TABLE_TYPE WHERE id=?";
+        $params = [$typeId];
+        return $this->update($sql, $params);
+
+    }
+
+
     /**
      * 删除分类及该分类下的子分类
      * @param $typeId
@@ -105,15 +126,14 @@ class WordTypeDB extends AbstractDB
     }
 
     /**
-     * 分页获取词条分类
+     * 获取all词条分类
      * @param $pageIndex
      * @param $pageSize
      * @return bool
      */
-    public function getWordTypePaging(int $pageIndex,int $pageSize)
+    public function getAllWordType()
     {
-        $start = ($pageIndex - 1) * $pageSize;
-        $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE LIMIT $start,$pageSize";
+        $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE";
         return $this->query($sql);
     }
 
@@ -134,7 +154,8 @@ class WordTypeDB extends AbstractDB
      * @param $pageSize
      * @return bool
      */
-    public function getTopWordTypePaging(int $pageIndex,int $pageSize){
+    public function getTopWordTypePaging(int $pageIndex, int $pageSize)
+    {
         $start = ($pageIndex - 1) * $pageSize;
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = 0 LIMIT $start,$pageSize";
         return $this->query($sql);
@@ -156,9 +177,10 @@ class WordTypeDB extends AbstractDB
      * @param $typeId
      * @return null
      */
-    public function getChildWordTypeListById(int $typeId){
+    public function getChildWordTypeListById(int $typeId)
+    {
         $sql = "SELECT id,type,parentId,depth,createTime,updateTime FROM $this->TABLE_TYPE WHERE parentId = ?";
         $params = [$typeId];
-        return $this->query($sql,$params);
+        return $this->query($sql, $params);
     }
 }

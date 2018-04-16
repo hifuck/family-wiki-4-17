@@ -15,90 +15,330 @@
             </ul>
         </div>
         <!--nav-->
+        <!--header-->
+
+        <!--/header-->
 
         <!--pageContent-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <header class="container" style="margin-bottom: 35px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input id="btnAdd" class="btn btn-primary" type="button" value="添加分类">
+                        <input id="btnEdit" class="btn btn-success" type="button" value="编辑分类">
+                        <input id="btnDel" class="btn btn-danger" type="button" value="删除分类">
+                    </div>
+                </div>
+            </header>
 
-            <h1 class="sub-header">词条分类列表</h1>
-            <h3 class="sub-header"><a href="/Admin/WordType/viewAdd" class="btn btn-default btn-success">添加词条分类</a></h3>
-            <!--tree-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">词条分类目录</h3>
+                            </div>
+                            <div class="panel-body right_centent" style="">
+                                <div id="left-tree"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">编辑区</h3>
+                            </div>
+                            <!--编辑操作权限 start-->
+                            <div class="panel-body right_centent">
+                                <div id="editShow">
+                                    <div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">名字:</span>
 
+                                            <input id="editType" type="text" class="form-control"/>
+                                        </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">父级Id:</span>
 
+                                            <input id="editParentId" type="text" class="form-control"/>
+                                        </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">第几级:</span>
 
-
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>分类</th>
-                        <th>父级Id</th>
-                        <th>第几级</th>
-                        <th>创建时间</th>
-                        <th>更新时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    {foreach $data['content'] as $v}
-                    <tr>
-                        <td>{$v['id']}</td>
-                        <td>{$v['typeId']}</td>
-                        <td> {$v['name']}</td>
-                        <td>{$v['content']}</td>
-                        <td>{$v['createTime']}</td>
-                        <td>{$v['updateTime']}</td>
-                        <td>
-                            <a href="viewEdit?id={$v['id']}" class="btn btn-default">编辑</a>
-                            <button type="button" value="{$v['id']}" id="del" class="btn btn-default" onclick="del()">删除</button>
-                        </td>
-                    </tr>
-                    {/foreach}
-
-                    </tbody>
-                </table>
-                <!--分页-->
-                <nav aria-label="Page navigation" style="text-align: center">
-                    <ul class="pagination">
-                        <li class="{$pre}">
-                            {if $pre eq 'disabled'}
-                            <span aria-hidden="true">&laquo;</span>
-                            {else}
-                            <a href="/Admin/WordTemplate/index?pageIndex={$data['pageIndex']-1}&&pageSize={$data['pageSize']}"
-                               aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                            {/if}
-                        </li>
-                        {for $var=$data['pageIndex'] to $data['total']}
-                        <li><a href="/Admin/WordTemplate/index?pageIndex={$var}&&pageSize={$data['pageSize']}">{$var}</a></li>
-                        {/for}
-                        <li>
-                            <a href="/Admin/WordTemplate/index?pageIndex={$data['pageIndex']+1}&&pageSize={$data['pageSize']}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        <li><span>总共{$data['total']}页</span></li>
-                        <li><span>显示<select name="pageSize" id="pageSize" onclick="my()">
-                            <option value="{$data['pageSize']}">{$data['pageSize']}</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                        </select>条</span></li>
-                    </ul>
-                </nav>
-                <!--分页-->
+                                            <input id="editDepth" type="text" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <input id="Edit" class="btn btn-primary" type="button" value="确定"/>
+                                        <input id="Edit_cancel" class="btn btn-default" type="button"
+                                               style="margin-left:80px;display:none;" value="取消"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--编辑操作权限 end-->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!--/tree-->
+            <div>
+                <!--弹出框 新增权限 start-->
+                <div class="modal fade" id="addOperation-dialog" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
 
+                        <div class="modal-content radius_5">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">新增</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div group="" item="add">
+                                    <div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">分类:</span>
+                                            <input id="type" type="text" class="form-control"/>
+                                        </div>
+                                        <br>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">父级Id:</span>
+                                            <input id="parentId" type="text" class="form-control"/>
+                                        </div>
+                                        <br>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon">第几级:</span>
+                                            <input id="depth" type="text" class="form-control"/>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="Save" type="button" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!--弹出框 新增权限 end-->
+
+            </div>
         </div>
         <!--pageContent-->
+        <!---->
+
+        <!--//-->
     </div>
 </div>
 
 {include "Admin/Include/foot.html"}
+<script src="/App/Views/Assets/admin/js/bootstrap-tree.js"></script>
+<script src="/App/Views/Assets/admin/js/customPlugin.js"></script>
+<script src="/App/Views/Assets/admin/js/bootstrap-dialog.min.js"></script>
+<link rel="stylesheet" href="/App/Views/Assets/admin/css/bootstrap-dialog.min.css">
+<link rel="stylesheet" href="/App/Views/Assets/admin/css/bootstrap-treeview.min.css">
+<script type="text/javascript">
+    $(function () {
+        onLoad();
+        BindEvent();
+
+        //页面加载
+        function onLoad() {
+            $('#editShow').hide();
+            $.ajax({
+                url: '/Admin/WordType/getAllWordType',
+                type: 'post',
+                data: {
+                    api: 1
+                },
+                success: function (data) {
+
+                    var dataJson = JSON.parse(data);
+
+                    if (dataJson.errorCode == 0) {
+                        var records = dataJson.data.content;
+                        if (!records) {
+                            return;
+                        }
+
+                        //渲染树
+                        $('#left-tree').treeview({
+                            data: records,
+                            levels: 1,
+                            onNodeSelected: function (event, node) {
+                                $('#editName').val(node.text);
+                            },
+                            showCheckbox: false//是否显示多选
+                        });
+                    }
+                }
+            })
+
+        }
+
+        //事件注册
+        function BindEvent() {
+            //保存-新增
+            $("#Save").click(function () {
+                $('#addOperation-dialog').modal('hide')
+                var type = $('#type').val();
+                var parentId = $('#parentId').val();
+                var depth = $('#depth').val();
+
+                console.log(type);
+
+                $.ajax({
+                    url: '/Admin/WordType/add',
+                    type: 'POST',
+                    data: {
+                        type: type,
+                        parentId: parentId,
+                        depth: depth,
+                        api: 1
+                    },
+                    success: function (data) {
+                        var dataJson = JSON.parse(data);
+                        console.log(dataJson.data.typeId);
+                    },
+                    error: function () {
+                        alert('connect error')
+                    }
+                });
+            });
+        }
+
+        //保存-编辑
+        $('#Edit').click(function () {
+            var node = $('#left-tree').treeview('getSelected');
+            var type =  $('#editType').val();
+            var parentId = $('#editParentId').val();
+            var depth = $('#editDepth').val();
+            var typeId = node[0].id;
+
+            $.ajax({
+                url: '/Admin/WordType/edit',
+                type: 'POST',
+                data: {
+                    type: type,
+                    parentId: parentId,
+                    depth: depth,
+                    typeId:typeId,
+                    api: 1
+                },
+                success: function (data) {
+                    var dataJson = JSON.parse(data);
+                    console.log(dataJson.data.updateRow);
+                    if(dataJson.data.updateRow > 0){
+                        alert('更新成功');
+                    }
+                },
+                error: function () {
+                    alert('connect error')
+                }
+            });
+
+        });
+        //显示-添加
+        $("#btnAdd").click(function () {
+            var node = $('#left-tree').treeview('getSelected');
+            if (node.length == 0) {
+                $.showMsgText('请选择节点');
+                return;
+            }
+            $('#addOperation-dialog').modal('show');
+            console.log(node);
+            $('#type').val(node[0].type);
+            $('#parentId').val(node[0].parent_id);
+            $('#depth').val(node[0].depth);
+
+        });
+        //显示-编辑
+        $("#btnEdit").click(function () {
+            $('#editShow').hide();
+            var node = $('#left-tree').treeview('getSelected');
+            if (node.length == 0) {
+                $.showMsgText('请选择节点');
+                return;
+            }
+            $('#editShow').show();
+            $('#editType').val(node[0].type);
+            $('#editParentId').val(node[0].parent_id);
+            $('#editDepth').val(node[0].depth);
+        });
+        //删除
+        $("#btnDel").click(function () {
+            var node = $('#left-tree').treeview('getSelected');
+            if (node.length == 0) {
+                $.showMsgText('请选择节点');
+                return;
+            }
+            BootstrapDialog.confirm({
+                title: '提示',
+                message: '确定删除此节点?',
+                size: BootstrapDialog.SIZE_SMALL,
+                type: BootstrapDialog.TYPE_DEFAULT,
+                closable: true,
+                btnCancelLabel: '取消',
+                btnOKLabel: '确定',
+                callback: function (result) {
+                    if (result) {
+                        del();
+                    }
+                }
+            });
+
+            function del() {
+                var typeId = node[0].id;
+                $.ajax({
+                    url: '/Admin/WordType/del',
+                    type: 'POST',
+                    data: {
+                        typeId: typeId,
+                        api: 1
+                    },
+                    success: function (data) {
+                        var dataJson = JSON.parse(data);
+                        if (dataJson.errorCode !== 0) {
+                            alert(dataJson.msg);
+                        }
+                        var delRow = dataJson.data.delRow;
+
+                        if (delRow > 0) {
+                            alert('删出成功');
+                            window.location.href = '/Admin/WordType/index'
+                        }
+
+                    },
+                    error: function () {
+                        alert("connect error");
+                    }
+                });
+
+
+            }
+
+        });
+
+        /*-----页面pannel内容区高度自适应 start-----*/
+        $(window).resize(function () {
+            setCenterHeight();
+        });
+        setCenterHeight();
+
+        function setCenterHeight() {
+            var height = $(window).height();
+            var centerHight = height - 240;
+            $(".right_centent").height(centerHight).css("overflow", "auto");
+        }
+
+        /*-----页面pannel内容区高度自适应 end-----*/
+
+    });
+</script>
 
 
 

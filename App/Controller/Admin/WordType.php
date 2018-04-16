@@ -131,13 +131,18 @@ class WordType extends ViewController
 
         $wordTypeDb = new WordTypeDB();
 
-        $result = $wordTypeDb->delWordType($typeId);
+        if ($wordTypeDb->checkIsParent($typeId)){
+            Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '只能一级一级删除', '', $api);
+            return;
+        }
+
+        $result = $wordTypeDb->del($typeId);
 
         if ($api !== null) {
             $data['delRow'] = $result;
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
-            $this->assign('delRowArr', $result);
+            $this->assign('delRow', $result);
             $this->fetch('Admin/WordType/del.html');
         }
     }
@@ -145,31 +150,18 @@ class WordType extends ViewController
     /**
      * 分页获取词条分类
      */
-    function getWordTypePaging()
+    function getAllWordType()
     {
         $params = $this->request()->getRequestParam();
         $api = $params['api'] ?? null;
 
-        try {
-            $pageIndex = Check::checkInteger($params['pageIndex'] ?? 1);
-            $pageSize = Check::checkInteger($params['pageSize'] ?? 10);
-        } catch (CheckException $e) {
-            Util::printError($this, $e->getCode(), $e->getMessage(), '', $api);
-            return;
-        }
-
         $wordTypeDb = new WordTypeDB();
 
-        $result = $wordTypeDb->getWordTypePaging($pageIndex, $pageSize);
+        $result = $wordTypeDb->getAllWordType();
 
-        $count = $wordTypeDb->countWordType();
-        $total = ceil($count/$pageSize);
+        $result = $this->getTree($result,"0");
 
-        $data['pageIndex'] = $pageIndex;
-        $data['pageSize'] = $pageSize;
         $data['content'] = $result;
-        $data['total'] = $total;
-
         if ($api !== null) {
             Util::printResult($this->response(), ErrorCode::ERROR_SUCCESS, $data);
         } else {
@@ -177,6 +169,22 @@ class WordType extends ViewController
         }
     }
 
+    function getTree($data, $pId)
+    {
+        $tree = array();
+        foreach($data as $k => $v)
+        {
+            if($v['parentId'] == $pId)
+            {        //父亲找到儿子
+                $v['text'] = $v['type'];
+                $v['parent_id'] = $v['parentId'];
+                $v['nodes'] = $this->getTree($data, $v['id']);
+                $tree[] = $v;
+                //unset($data[$k]);
+            }
+        }
+        return $tree;
+    }
     /**
      * 分页获取一级词条分类
      */
@@ -281,6 +289,7 @@ class WordType extends ViewController
     {
         // TODO: Implement onRequest() method.
         parent::onRequest($actionName);
+        $this->request()->withHeader('Access-Control-Allow-Origin','*');
     }
 
     function actionNotFound($actionName = null, $arguments = null)
