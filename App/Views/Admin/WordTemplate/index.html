@@ -1,18 +1,6 @@
 {include "Admin/Include/header.html"}
-<!--nav-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar ">
-                <li><a href="#">主页 </a></li>
-                <li><a href="/Admin/WordType/index">词条分类</a></li>
-                <li class="active">
-                    <a href="/Admin/WordTemplate/index">模板分类<span class="sr-only">(current)</span></a>
-                </li>
-                <li><a href="/Admin/Word/index">词条审核</a></li>
-            </ul>
-        </div>
-        <!--nav-->
+{include "Admin/Include/top-menu.html"}
+{include "Admin/Include/left-nav.html"}
 
         <!--pageContent-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -102,14 +90,13 @@
     function del() {
 
         var templateId = document.getElementById('del').value;
-        var api = 1;
 
         $.ajax({
             type:'POST',
             url:'/Admin/WordTemplate/del',
             data:{
                 templateId:templateId,
-                api:api
+                api:1
             },
             async: false,
             error: function(request) {  //失败的话

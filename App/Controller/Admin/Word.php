@@ -14,10 +14,9 @@ use App\Task\AsyncTask;
 use App\Utils\Check;
 use App\Utils\CheckException;
 use App\Utils\Util;
-use App\ViewController;
 use Conf\ErrorCode;
 
-class Word extends ViewController
+class Word extends Base
 {
 
     function index()
@@ -172,6 +171,10 @@ class Word extends ViewController
     {
         // TODO: Implement onRequest() method.
         parent::onRequest($actionName);
+        $arr = ['getWordVerifyReviewPaging','wordIsVerified','index'];
+        if (in_array($actionName,$arr)){
+            $this->checkLoginStatus();
+        }
     }
 
     function actionNotFound($actionName = null, $arguments = null)

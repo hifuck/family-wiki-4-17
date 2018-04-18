@@ -13,10 +13,9 @@ use App\DB\WordTemplateDB;
 use App\Utils\Check;
 use App\Utils\CheckException;
 use App\Utils\Util;
-use App\ViewController;
 use Conf\ErrorCode;
 
-class WordTemplate extends ViewController
+class WordTemplate extends Base
 {
 
     function index()
@@ -225,6 +224,10 @@ class WordTemplate extends ViewController
     {
         // TODO: Implement onRequest() method.
         parent::onRequest($actionName);
+        $arr = ['index','viewAdd','viewEdit','add','edit','del'];
+        if (in_array($actionName,$arr)){
+            $this->checkLoginStatus();
+        }
     }
 
     function actionNotFound($actionName = null, $arguments = null)

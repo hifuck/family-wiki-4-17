@@ -1,0 +1,26 @@
+<!--nav-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" id="nav">
+                <li><a href="/Admin/Index/index">主页</a></li>
+                <li><a href="/Admin/WordType/index">词条分类</a></li>
+                <li><a href="/Admin/WordTemplate/index">模板分类</a></li>
+                <li><a href="/Admin/Word/index">词条审核</a></li>
+            </ul>
+        </div>
+        <!--nav-->
+
+        <script type="text/javascript">
+            $(function () {
+                $("#nav").find("li").each(function () {
+                    var a = $(this).find("a:first")[0];
+                    if ($(a).attr("href") === location.pathname) {
+                        $(this).addClass("active");
+                    } else {
+                        $(this).removeClass("active");
+                    }
+                });
+            })
+
+        </script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Kodinger">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/App/Views/Assets/admin/css/my-login.css">
+</head>
+<body class="my-login-page">
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="brand">
+                    <img src="/App/Views/Assets/imgs/logo_300_300.png">
+                </div>
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title" style="text-align: center">注册</h4>
+                        <form id="form">
+
+                            <div class="form-group">
+                                <label for="name">用户名</label>
+                                <input id="name" type="text" class="form-control" name="name" required autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">密码</label>
+                                <input id="password" type="password" class="form-control" name="password" required data-eye>
+                            </div>
+
+
+                            <div class="form-group no-margin">
+                                <button type="button" onclick="register()" class="btn btn-primary btn-block">
+                                    注册
+                                </button>
+                            </div>
+                            <div class="margin-top20 text-center">
+                                已经有账号了？ <a href="/Admin/User/index">登录</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer">
+                    ©CopyRight 2015-2018, IZUQUN.COM,鑫火信息技术（上海）有限公司, Inc.All Rights Reserved.
+                    <a href="http://www.miibeian.gov.cn/">沪ICP备15025148号-2</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/App/Views/Assets/admin/js/my-login.js"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+    function register() {
+        var name = $("#name").val();
+        var password = $("#password").val();
+        $.ajax({
+            url:'/Admin/User/register',
+            type:'POST',
+            data:{
+                name:name,
+                password:password,
+                api:1
+            },
+            success:function (data) {
+                var dataJson = JSON.parse(data);
+                if (dataJson.errorCode == "0"){
+                    if (dataJson.data.userId > 0){
+                        alert('注册成功');
+                        window.location.href = '/Admin/User/index'
+                    }
+                }
+                if (dataJson.errorCode !== "0"){
+                    alert(dataJson.msg)
+                }
+            },
+            error:function () {
+                alert('connect error')
+            }
+        })
+    }
+</script>

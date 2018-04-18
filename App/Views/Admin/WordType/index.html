@@ -1,23 +1,6 @@
 {include "Admin/Include/header.html"}
-<!--nav-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="#">主页 </a></li>
-                <li class="active">
-                    <a href="/Admin/WordType/index">词条分类<span class="sr-only">(current)</span></a>
-                </li>
-                <li>
-                    <a href="/Admin/WordTemplate/index">模板分类</a>
-                </li>
-                <li><a href="/Admin/Word/index">词条审核</a></li>
-            </ul>
-        </div>
-        <!--nav-->
-        <!--header-->
-
-        <!--/header-->
+{include "Admin/Include/top-menu.html"}
+{include "Admin/Include/left-nav.html"}
 
         <!--pageContent-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -27,6 +10,7 @@
                         <input id="btnAdd" class="btn btn-primary" type="button" value="添加分类">
                         <input id="btnEdit" class="btn btn-success" type="button" value="编辑分类">
                         <input id="btnDel" class="btn btn-danger" type="button" value="删除分类">
+                        <input id="btnTypeDetail" class="btn btn-success" type="button" value="查看分类详情">
                     </div>
                 </div>
             </header>
@@ -76,6 +60,29 @@
                                 </div>
                             </div>
                             <!--编辑操作权限 end-->
+                            <!--查看-->
+                            <div class="modal fade" id="typeDetail" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+
+                                    <div class="modal-content radius_5">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="look">详情</h4>
+                                        </div>
+                                        <div class="modal-body" id="typeDetail-body" >
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!--查看 end-->
                         </div>
                     </div>
                 </div>
@@ -95,6 +102,9 @@
                             <div class="modal-body">
                                 <div group="" item="add">
                                     <div>
+                                        <div class="input-group margin-t-10 " id="addContent">
+                                        </div>
+                                        <br>
                                         <div class="input-group margin-t-5">
                                             <span class="input-group-addon">分类:</span>
                                             <input id="type" type="text" class="form-control"/>
@@ -129,9 +139,7 @@
             </div>
         </div>
         <!--pageContent-->
-        <!---->
 
-        <!--//-->
     </div>
 </div>
 
@@ -149,6 +157,7 @@
         //页面加载
         function onLoad() {
             $('#editShow').hide();
+
             $.ajax({
                 url: '/Admin/WordType/getAllWordType',
                 type: 'post',
@@ -159,11 +168,8 @@
 
                     var dataJson = JSON.parse(data);
 
-                    if (dataJson.errorCode == 0) {
+                    if (dataJson.errorCode == "0") {
                         var records = dataJson.data.content;
-                        if (!records) {
-                            return;
-                        }
 
                         //渲染树
                         $('#left-tree').treeview({
@@ -189,8 +195,6 @@
                 var parentId = $('#parentId').val();
                 var depth = $('#depth').val();
 
-                console.log(type);
-
                 $.ajax({
                     url: '/Admin/WordType/add',
                     type: 'POST',
@@ -202,7 +206,14 @@
                     },
                     success: function (data) {
                         var dataJson = JSON.parse(data);
-                        console.log(dataJson.data.typeId);
+                        if(dataJson.data.typeId >0){
+                            alert('添加成功');
+                            window.location.href='/Admin/WordType/index'
+                        }else{
+                            alert('添加失败');
+                            window.location.href='/Admin/WordType/index'
+                        }
+
                     },
                     error: function () {
                         alert('connect error')
@@ -231,9 +242,12 @@
                 },
                 success: function (data) {
                     var dataJson = JSON.parse(data);
-                    console.log(dataJson.data.updateRow);
                     if(dataJson.data.updateRow > 0){
                         alert('更新成功');
+                        window.location.href='/Admin/WordType/index'
+                    }else{
+                        alert('更新失败');
+                        window.location.href='/Admin/WordType/index'
                     }
                 },
                 error: function () {
@@ -246,14 +260,13 @@
         $("#btnAdd").click(function () {
             var node = $('#left-tree').treeview('getSelected');
             if (node.length == 0) {
-                $.showMsgText('请选择节点');
+                $.showMsgText('请选择分类');
                 return;
             }
             $('#addOperation-dialog').modal('show');
-            console.log(node);
-            $('#type').val(node[0].type);
-            $('#parentId').val(node[0].parent_id);
-            $('#depth').val(node[0].depth);
+
+            var content = '选择的分类名字:'+node[0].type+'    分类Id:'+node[0].id+'    分类级别:'+node[0].depth;
+            document.getElementById('addContent').innerHTML = content;
 
         });
         //显示-编辑
@@ -261,7 +274,7 @@
             $('#editShow').hide();
             var node = $('#left-tree').treeview('getSelected');
             if (node.length == 0) {
-                $.showMsgText('请选择节点');
+                $.showMsgText('请选择分类');
                 return;
             }
             $('#editShow').show();
@@ -269,24 +282,36 @@
             $('#editParentId').val(node[0].parent_id);
             $('#editDepth').val(node[0].depth);
         });
+        //查看
+        $("#btnTypeDetail").click(function () {
+            var node = $('#left-tree').treeview('getSelected');
+            if (node.length == 0) {
+                $.showMsgText('请选择分类');
+                return;
+            }
+            $('#typeDetail').modal('show');
+
+            var content = '分类Id是'+node[0].id+'<br>分类名字是'+node[0].type+'<br>父级parent_id是'+node[0].parent_id+'<br>depth'+node[0].depth;
+            document.getElementById('typeDetail-body').innerHTML = content;
+        });
         //删除
         $("#btnDel").click(function () {
             var node = $('#left-tree').treeview('getSelected');
             if (node.length == 0) {
-                $.showMsgText('请选择节点');
+                $.showMsgText('请选择分类');
                 return;
             }
             BootstrapDialog.confirm({
                 title: '提示',
-                message: '确定删除此节点?',
+                message: '确定删除此分类?',
                 size: BootstrapDialog.SIZE_SMALL,
                 type: BootstrapDialog.TYPE_DEFAULT,
                 closable: true,
                 btnCancelLabel: '取消',
                 btnOKLabel: '确定',
                 callback: function (result) {
-                    if (result) {
-                        del();
+                    if(result){
+                        del()
                     }
                 }
             });
@@ -304,11 +329,15 @@
                         var dataJson = JSON.parse(data);
                         if (dataJson.errorCode !== 0) {
                             alert(dataJson.msg);
+                            window.location.href = '/Admin/WordType/index'
                         }
                         var delRow = dataJson.data.delRow;
 
                         if (delRow > 0) {
                             alert('删出成功');
+                            window.location.href = '/Admin/WordType/index'
+                        }else{
+                            alert('删出失败');
                             window.location.href = '/Admin/WordType/index'
                         }
 
@@ -334,7 +363,6 @@
             var centerHight = height - 240;
             $(".right_centent").height(centerHight).css("overflow", "auto");
         }
-
         /*-----页面pannel内容区高度自适应 end-----*/
 
     });

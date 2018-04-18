@@ -1,18 +1,16 @@
 {include "Admin/Include/header.html"}
-<!--nav-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="#">主页 </a></li>
-                <li><a href="/Admin/WordType/index">词条分类</a></li>
-                <li class="active">
-                    <a href="/Admin/WordTemplate/index">模板分类<span class="sr-only">(current)</span></a>
-                </li>
-                <li><a href="/Admin/Word/index">词条审核</a></li>
-            </ul>
-        </div>
-        <!--nav-->
+{include "Admin/Include/top-menu.html"}
+{include "Admin/Include/left-nav.html"}
+<script src="/App/Views/Assets/editor_md/editormd.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("editormd", {
+            path : "/App/Views/Assets/editor_md/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
+        });
+
+        $("#editormd").css("height",window.innerHeight-150)
+    });
+</script>
 
         <!--pageContent-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -29,10 +27,12 @@
                         <label for="name">名字</label>
                         <input type="text" class="form-control" name="name" value="{$data['name']}" id="name" placeholder="名字">
                     </div>
+                    <link rel="stylesheet" href="/App/Views/Assets/editor_md/css/editormd.min.css" />
                     <div class="form-group">
                         <label for="content">内容</label>
-                        <textarea name="content" id="content"
-                                  cols="30" rows="10" class="form-control">{$data['content']}</textarea>
+                        <div id="editormd">
+                            <textarea type="text" name="content" id="content" style="display:none;">{$data['content']}</textarea>
+                        </div>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="templateId" value="{$data['id']}">

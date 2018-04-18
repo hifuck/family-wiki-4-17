@@ -13,24 +13,17 @@ use App\DB\WordTypeDB;
 use App\Utils\Check;
 use App\Utils\CheckException;
 use App\Utils\Util;
-use App\ViewController;
 use Conf\ErrorCode;
 
-class WordType extends ViewController
+class WordType extends Base
 {
 
     function index()
     {
         // TODO: Implement index() method.
-//        $this->getTopWordTypePaging();
-//        $this->getChildWordTypeListById();
         $this->fetch('Admin/WordType/index.html');
     }
 
-    function viewAdd()
-    {
-        $this->fetch('Admin/WordType/add.html');
-    }
 
     /**
      * 添加词条分类
@@ -131,7 +124,7 @@ class WordType extends ViewController
 
         $wordTypeDb = new WordTypeDB();
 
-        if ($wordTypeDb->checkIsParent($typeId)){
+        if ($wordTypeDb->checkIsParent($typeId)) {
             Util::printError($this, ErrorCode::ERROR_PARAM_MISSING, '只能一级一级删除', '', $api);
             return;
         }
@@ -159,7 +152,7 @@ class WordType extends ViewController
 
         $result = $wordTypeDb->getAllWordType();
 
-        $result = $this->getTree($result,"0");
+        $result = $this->getTree($result, "0");
 
         $data['content'] = $result;
         if ($api !== null) {
@@ -172,10 +165,8 @@ class WordType extends ViewController
     function getTree($data, $pId)
     {
         $tree = array();
-        foreach($data as $k => $v)
-        {
-            if($v['parentId'] == $pId)
-            {        //父亲找到儿子
+        foreach ($data as $k => $v) {
+            if ($v['parentId'] == $pId) {        //父亲找到儿子
                 $v['text'] = $v['type'];
                 $v['parent_id'] = $v['parentId'];
                 $v['nodes'] = $this->getTree($data, $v['id']);
@@ -185,6 +176,7 @@ class WordType extends ViewController
         }
         return $tree;
     }
+
     /**
      * 分页获取一级词条分类
      */
@@ -289,7 +281,10 @@ class WordType extends ViewController
     {
         // TODO: Implement onRequest() method.
         parent::onRequest($actionName);
-        $this->request()->withHeader('Access-Control-Allow-Origin','*');
+        $arr = ['index', 'add', 'edit', 'del', 'getAllWordType'];
+        if (in_array($actionName, $arr)) {
+            $this->checkLoginStatus();
+        }
     }
 
     function actionNotFound($actionName = null, $arguments = null)
